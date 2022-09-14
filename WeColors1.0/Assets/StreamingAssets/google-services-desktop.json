@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "417338014842",
+    "project_id": "wecolors1",
+    "storage_bucket": "wecolors1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417338014842:android:e3d8dbb528a071c61acfc3",
+        "android_client_info": {
+          "package_name": "com.deltaTime.WeColors1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417338014842-k1a23kvh0oet55fc5ci5vtncrl9niuvd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deltaTime.WeColors1",
+            "certificate_hash": "66d77f10062da9b629dd609814187681ad2ab69f"
+          }
+        },
+        {
+          "client_id": "417338014842-u102h7i7hflilrcvj30d4jmssogm3f6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3k4bXDRE5jBF37SjL6LSiHH-Tzr97QWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417338014842-u102h7i7hflilrcvj30d4jmssogm3f6k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
