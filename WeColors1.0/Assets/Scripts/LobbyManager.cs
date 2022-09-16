@@ -67,6 +67,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
 
         mainText.text = "상대를 찾았습니다!";
+        Invoke("PhotonLoadLevel", 2f);
+    }
+
+    void PhotonLoadLevel()
+    {
         PhotonNetwork.LoadLevel("MatchStart");
     }
 }
