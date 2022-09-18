@@ -59,6 +59,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
+        mainText.text = "새로운 방을 생성중입니다...";
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
     }
 

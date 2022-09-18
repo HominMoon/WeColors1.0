@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
 
-public class MatchCounter : MonoBehaviour
+public class MatchCounter : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        Invoke("PhotonLoadLevel", 3f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private static void PhotonLoadLevel()
     {
-        
+        PhotonNetwork.LoadLevel("Match1");
     }
 }
