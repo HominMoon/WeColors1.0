@@ -10,8 +10,6 @@ public class PlayerMovement : MonoBehaviourPun
 
     [SerializeField] float speed = 5f;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +24,6 @@ public class PlayerMovement : MonoBehaviourPun
         {
             return;
         }
-
         float xVal = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
         float zVal = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 

@@ -13,6 +13,6 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     private static void PhotonLoadLevel()
     {
-        PhotonNetwork.LoadLevel("Match1");
+        PhotonNetwork.LoadLevel("Game1");
     }
 }

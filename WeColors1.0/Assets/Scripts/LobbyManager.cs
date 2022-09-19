@@ -58,7 +58,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        base.OnJoinRandomFailed(returnCode, message);
+        // base.OnJoinRandomFailed(returnCode, message);
         mainText.text = "새로운 방을 생성중입니다...";
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
     }
@@ -68,11 +68,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
 
         mainText.text = "상대를 찾았습니다!";
-        Invoke("PhotonLoadLevel", 2f);
-    }
-
-    void PhotonLoadLevel()
-    {
-        PhotonNetwork.LoadLevel("MatchStart");
+        //Invoke("PhotonLoadLevel", 2f);
+        PhotonNetwork.LoadLevel("Game1");
     }
 }

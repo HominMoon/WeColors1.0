@@ -18,14 +18,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject player1Prefab;
+    [SerializeField] GameObject player2Prefab;
     [SerializeField] Transform[] spawnPositions;
     [SerializeField] TMP_Text scoreText;
 
     private static GameManager instance;
     int[] playScores;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +38,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber -1;
         Transform spawnPosition = spawnPositions[localplayerIndex];
 
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            PhotonNetwork.Instantiate(player1Prefab.name, spawnPosition.position, spawnPosition.rotation);
+        }
+        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            PhotonNetwork.Instantiate(player2Prefab.name, spawnPosition.position, spawnPosition.rotation);
+        }
+
+        
     }
 
     public override void OnLeftRoom()

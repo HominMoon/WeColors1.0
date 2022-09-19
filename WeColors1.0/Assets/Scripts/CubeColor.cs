@@ -12,8 +12,21 @@ public class CubeColor : MonoBehaviourPun
         rd = GetComponent<MeshRenderer>();
     }
 
+    public bool IsMasterClient()
+    {
+        if(PhotonNetwork.IsMasterClient && photonView.IsMine) { return true; }
+        
+        return false;
+    }
+
+    [PunRPC]
     void OnCollisionEnter(Collision other) 
     {
+        if(!IsMasterClient() || PhotonNetwork.PlayerList.Length < 2)
+        {
+            return;
+        }
+
         if(other.gameObject.tag == "Player1" && GetComponent<MeshRenderer>().material.color != Color.red)
         {
             GetComponent<MeshRenderer>().material.color = Color.red;
