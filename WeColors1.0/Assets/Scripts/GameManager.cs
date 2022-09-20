@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         playScores = new[] {9, 9};
         SpawnPlayer();
     }
-
+    
     private void SpawnPlayer()
     {
         int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber -1;
@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.Instantiate(player2Prefab.name, spawnPosition.position, spawnPosition.rotation);
         }
-
         
     }
 

@@ -5,36 +5,39 @@ using UnityEngine;
 
 public class CubeColor : MonoBehaviourPun
 {
-    MeshRenderer rd;
+    MeshRenderer mr;
 
     void start()
     {
-        rd = GetComponent<MeshRenderer>();
+        mr = GetComponent<MeshRenderer>();
     }
 
-    public bool IsMasterClient()
-    {
-        if(PhotonNetwork.IsMasterClient && photonView.IsMine) { return true; }
+    // public bool IsMasterClient()
+    // {
+    //     if(PhotonNetwork.IsMasterClient && photonView.IsMine) { return true; }
         
-        return false;
-    }
+    //     return false;
+    // }
 
-    [PunRPC]
-    void OnCollisionEnter(Collision other) 
-    {
-        if(!IsMasterClient() || PhotonNetwork.PlayerList.Length < 2)
-        {
-            return;
-        }
 
-        if(other.gameObject.tag == "Player1" && GetComponent<MeshRenderer>().material.color != Color.red)
-        {
-            GetComponent<MeshRenderer>().material.color = Color.red;
-        }
-        else if (other.gameObject.tag == "Player2" && GetComponent<MeshRenderer>().material.color != Color.blue)
-        {
-            GetComponent<MeshRenderer>().material.color = Color.blue;
-        }
-    }
+    // void OnCollisionEnter(Collision other) 
+    // {
+    //     if(other.gameObject.tag != "Player") { return; }
+
+    //     photonView.RPC("RPCChangeColor", RpcTarget.All);
+    // }
+
+    // [PunRPC]
+    // void RPCChangeColor()
+    // {
+    //     if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
+    //     { 
+    //         mr.material.color = Color.red;
+    //     }
+    //     else
+    //     {
+    //         mr.material.color = Color.blue;
+    //     }
+    // }
 
 }
