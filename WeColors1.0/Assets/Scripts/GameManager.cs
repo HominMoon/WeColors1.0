@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [SerializeField] GameObject player1Prefab;
-    [SerializeField] GameObject player2Prefab;
+    [SerializeField] GameObject playerPrefab;
     [SerializeField] Transform[] spawnPositions;
     [SerializeField] TMP_Text scoreText;
 
@@ -40,11 +39,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
-            PhotonNetwork.Instantiate(player1Prefab.name, spawnPosition.position, spawnPosition.rotation);
+            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
         }
         else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
-            PhotonNetwork.Instantiate(player2Prefab.name, spawnPosition.position, spawnPosition.rotation);
+            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
         }
         
     }

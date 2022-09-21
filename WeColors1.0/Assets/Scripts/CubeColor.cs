@@ -5,17 +5,44 @@ using UnityEngine;
 
 public class CubeColor : MonoBehaviourPun
 {
-    MeshRenderer mr;
-
-    void start()
+    public static GameManager Instance
     {
-        mr = GetComponent<MeshRenderer>();
+        get
+        {
+            if (instance == null) instance = FindObjectOfType<GameManager>();
+
+            return instance;
+        }
     }
+
+    private static GameManager instance;
+
+    public void ChangeColor(int playerNum)
+    {
+        photonView.RPC("RPCChangeColor", RpcTarget.All, playerNum);
+    }
+
+    [PunRPC]
+    void RPCChangeColor(int playerNum)
+    {
+        if (playerNum == 1)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.red;
+        }
+
+        else if (playerNum == 2)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
+        }
+
+    }
+
+    //**폐기 코드**
 
     // public bool IsMasterClient()
     // {
     //     if(PhotonNetwork.IsMasterClient && photonView.IsMine) { return true; }
-        
+
     //     return false;
     // }
 

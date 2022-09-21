@@ -8,51 +8,69 @@ public class PlayerMovement : MonoBehaviourPun
     Rigidbody rd;
     Transform tr;
 
+    int playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+
     [SerializeField] float speed = 5f;
+    GameObject joyStick;
+    Vector2 playerDirection;
 
     // Start is called before the first frame update
     void Start()
     {
         rd = GetComponent<Rigidbody>();
+        joyStick =  GameObject.Find("JoyStick");
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        if(!photonView.IsMine)
+        if (!photonView.IsMine)
         {
             return;
         }
-        float xVal = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        float zVal = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+        
+        playerDirection = joyStick.GetComponent<JoyStick>().inputDirection;
+        Move(playerDirection);
 
-        transform.Translate(xVal,0,zVal);
 
     }
 
-    void OnCollisionEnter(Collision other) {
-
-        if(other.gameObject.tag != "Cube")
-        {
-            return;
-        }
-
-        photonView.RPC("RPCChangeColor", RpcTarget.All, other);
-    }
-
-
-    [PunRPC]
-    void RPCChangeColor(Collision other)
+    public void Move(Vector2 inputDirection)
     {
-        if(!photonView.IsMine)
-        { 
+        if (!photonView.IsMine)
+        {
             return;
         }
 
-        other.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+        bool isMove = inputDirection.magnitude != 0;
 
-            //other.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+        Debug.Log(isMove);
 
+        if (isMove)
+        {
+            float xVal = inputDirection.x * speed * Time.deltaTime;
+            float zVal = inputDirection.y * speed * Time.deltaTime;
+
+            transform.Translate(xVal, 0, zVal);
+        }
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if (other.gameObject.tag != "Cube")
+        {
+            return;
+        }
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        GameObject collidedGameObject = other.gameObject;
+
+        collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
+    }
+
 }
