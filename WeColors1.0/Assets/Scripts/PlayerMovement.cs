@@ -5,6 +5,9 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviourPun
 {
+    //요약: 플레이어를 조이스틱의 벡터를 받아와 이동시킨다.
+    //수정 필요: 플레이어의 충돌에 대한 내용이 같이 쓰여 있으므로 분리 필요
+
     Rigidbody rd;
     Transform tr;
 
@@ -23,7 +26,7 @@ public class PlayerMovement : MonoBehaviourPun
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!photonView.IsMine)
         {

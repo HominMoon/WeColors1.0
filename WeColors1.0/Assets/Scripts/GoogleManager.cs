@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GoogleManager : MonoBehaviour
 {
+    //요약: 구글 플레이 게임즈에 로그인 한다.
+
     [SerializeField] TMP_Text text;
     public static string authCode;
 

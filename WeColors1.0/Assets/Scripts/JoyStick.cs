@@ -15,6 +15,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     bool isInput;
     public Vector2 inputDirection;
+    public Vector2 rotateDirection;
 
 
     void Awake()
@@ -47,6 +48,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         lever.anchoredPosition = Vector2.zero;
+        rotateDirection = inputDirection;
         inputDirection = Vector2.zero;
         isInput = false;
     }
@@ -60,7 +62,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         lever.anchoredPosition = inputVector;
 
         inputDirection = inputVector / leverRange; //inputVector는 너무 큰 값, 해상도에 따라 크기가 바뀌기 때문에
-    
+        rotateDirection = inputDirection;
         //Debug.Log(inputDirection.x + " " + inputDirection.y);
     }
 

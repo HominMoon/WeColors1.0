@@ -9,6 +9,8 @@ using TMPro;
 public class LobbyManager : MonoBehaviourPunCallbacks
 
 {
+    //요약: 로비 관리. 플레이어 매칭, 사용자 닉네임 변경, 로그아웃 등
+
     private readonly string gameVersion = "1.0";
     [SerializeField] Button playButton;
     [SerializeField] TMP_Text mainText;

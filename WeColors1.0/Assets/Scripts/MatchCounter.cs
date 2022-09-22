@@ -6,6 +6,8 @@ using Photon.Pun;
 
 public class MatchCounter : MonoBehaviourPunCallbacks
 {
+
+    // 나중에 사용 //
     void Start()
     {
         Invoke("PhotonLoadLevel", 3f);

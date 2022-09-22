@@ -8,6 +8,8 @@ using System;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    //요약: Game1의 관리
+
     public static GameManager Instance
     {
         get

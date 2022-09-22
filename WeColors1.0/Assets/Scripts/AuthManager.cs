@@ -7,6 +7,8 @@ using Firebase.Auth;
 
 public class AuthManager : MonoBehaviour
 {
+    //요약: 파이어베이스에 사용자를 등록한다. 사용자 관리 목적
+
     public static AuthManager instance = null;
 
     [SerializeField] Button GoogleLoginButton;
