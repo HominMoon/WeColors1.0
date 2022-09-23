@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 1685312646948156677}
   - component: {fileID: 84404191807626113}
   - component: {fileID: 98775689896813606}
-  - component: {fileID: 5277597714938595761}
   - component: {fileID: 2794741244055508004}
   - component: {fileID: 5485509318549473149}
   m_Layer: 0
@@ -212,18 +211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e486cfc88372c4f4db7d26ac3ffb856c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5277597714938595761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6148745123882262148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62ba81763b1b164c8c272d29080b100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2794741244055508004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,10 +268,9 @@ GameObject:
   - component: {fileID: 6801597466779941022}
   - component: {fileID: 3490108323908753020}
   - component: {fileID: 6822047941206292864}
-  - component: {fileID: -5850229618055429928}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player2
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -436,7 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c01461655fdca40847966d9bd49d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 3
 --- !u!114 &3490108323908753020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,15 +448,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinemachineVirtualCamera: {fileID: 0}
---- !u!114 &-5850229618055429928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801597466779941016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a15780db0b3f50469c4f2f212d6ac1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
