@@ -26,7 +26,7 @@ public class CubeColor : MonoBehaviourPun
     }
 
     [PunRPC]
-    void RPCChangeColor(int playerNum)
+    public void RPCChangeColor(int playerNum)
     {
         if (playerNum == 1)
         {

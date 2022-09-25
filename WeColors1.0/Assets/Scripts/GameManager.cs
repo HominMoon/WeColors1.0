@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     //요약: Game1의 관리
+    //개선 필요: 타임 매니저 동작 개선
 
     public static GameManager Instance
     {
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField] float gameTimer = 60f;
     [SerializeField] float countTimer = 3f;
+    [SerializeField] int numberofItemSpawn = 8;
+    [SerializeField] float itemSpawnPeriod = 5f;
 
 
     int[] playScores;
@@ -42,12 +45,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         playScores = new[] {9, 9};
         countText.text = " ";
-        StartCoroutine(Spawn());
+        
     }
 
     private void Update()
     {
         TimeManager();
+
+        if(PhotonNetwork.PlayerList.Length == 2)
+        {
+            StartCoroutine(Spawn());
+        }
+
+
 
     }
 
@@ -55,6 +65,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(5.0f);
         SpawnPlayer();
+        SpawnItem();
     }
 
     private void ItemManager()

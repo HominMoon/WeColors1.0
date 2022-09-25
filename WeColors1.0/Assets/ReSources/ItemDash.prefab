@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 7640183527574107586}
   - component: {fileID: -2539868938702127148}
   - component: {fileID: -5560342092782725528}
-  - component: {fileID: 3820547909590590738}
+  - component: {fileID: -8938267892153231815}
   m_Layer: 0
-  m_Name: Bombx
+  m_Name: ItemDash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &3820547909590590738
+--- !u!114 &-8938267892153231815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,7 +175,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2212904232088362487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58552107ee38c88458abc821899023e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c3d2a8b555436c4f9465833df70777a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayShooter: {fileID: 238037743124912423, guid: cd31ac5941867614da279b11fe9f4155, type: 3}

@@ -76,4 +76,16 @@ public class PlayerMovement : MonoBehaviourPun
         collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
     }
 
+    public void PlayerDash()
+    {
+        speed *= 2f;
+        StartCoroutine(DashEnd());
+    }
+
+    IEnumerator DashEnd()
+    {
+        yield return new WaitForSeconds(5f);
+        speed /= 2f;
+    }
+
 }

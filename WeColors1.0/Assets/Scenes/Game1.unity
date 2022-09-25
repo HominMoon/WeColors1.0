@@ -681,7 +681,7 @@ MonoBehaviour:
   infoText: {fileID: 2068532024}
   timeText: {fileID: 1952898233}
   countText: {fileID: 2015375577}
-  gameTimer: 10
+  gameTimer: 20
   countTimer: 3
 --- !u!4 &1319046484
 Transform:
