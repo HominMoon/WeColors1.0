@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     //요약: Game1의 관리
-    //개선 필요: 타임 매니저 동작 개선
+    //개선 필요: 타임 매니저 동작 개선, 아이템 스폰
 
     public static GameManager Instance
     {
@@ -43,61 +43,62 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        playScores = new[] {9, 9};
         countText.text = " ";
-        
+        if (PhotonNetwork.PlayerList.Length == 2)
+        {
+            StartCoroutine(GameStart());
+            StartCoroutine(ItemManager());
+        }
     }
 
     private void Update()
     {
         TimeManager();
+    }
 
-        if(PhotonNetwork.PlayerList.Length == 2)
-        {
-            StartCoroutine(Spawn());
-        }
-
-
-
+    IEnumerator GameStart()
+    {
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(Spawn());
     }
 
     IEnumerator Spawn()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitUntil(() => countTimer <= 0);
         SpawnPlayer();
         SpawnItem();
     }
 
-    private void ItemManager()
+    IEnumerator ItemManager()
     {
-
+        //아이템 스폰 일정 간격마다 실행
+        yield return new WaitForSeconds(itemSpawnPeriod);
+        SpawnItem();
+        StartCoroutine(ItemManager());
     }
 
     private void TimeManager()
     {
+        // 좀 더 일정한 간격으로 동작하게 수정
+
         timer += Time.deltaTime;
+        countTimer -= Time.deltaTime;
 
         if (gameTimer <= 0)
         {
             Time.timeScale = 0f;
         }
 
-        if (timer >= 1f && timer <= 5f)
+        if ((int)countTimer != 0)
         {
-            countTimer -= Time.deltaTime;
-
-            if ((int)countTimer != 0)
-            {
-                countText.text = $"{countTimer:N0}";
-            }
-            else
-            {
-                countText.text = "START!";
-            }
-
+            countText.text = $"{countTimer:N0}";
+        }
+        else
+        {
+            countText.text = "START!";
         }
 
-        if (gameTimer <= 60 && timer >= 5)
+        if (gameTimer <= 60 && timer >= 3)
         {
             countText.gameObject.SetActive(false);
             gameTimer -= Time.deltaTime;
@@ -109,49 +110,37 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void SpawnPlayer()
     {
-        int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber -1;
+        int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
         Transform spawnPosition = spawnPositions[localplayerIndex];
 
-        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
             PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
         }
-        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
             PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
         }
-        
+
+    }
+
+    public void SpawnItem()
+    {
+        int xVal = Random.Range(0, 15);
+        int zVal = Random.Range(0, 15);
+
+        if (!PhotonNetwork.IsMasterClient) { return; }
+
+        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
+
     }
 
     public override void OnLeftRoom()
     {
+        //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록
         base.OnLeftRoom();
 
         SceneManager.LoadScene("MainLobby");
     }
 
-    public void SpawnItem()
-    {
-        int xVal = Random.Range(0,16);
-        int zVal = Random.Range(0,16);
-
-        if(!PhotonNetwork.IsMasterClient) { return; }
-
-        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1 , zVal), Quaternion.identity); // y = 1 for floating
-
-    }
-
-    public void AddScore(int playerNumber, int score)
-    {
-        if(!PhotonNetwork.IsMasterClient) { return; }
-
-        playScores[playerNumber - 1] += score;
-
-        photonView.RPC("RPCUpdateScore", RpcTarget.All, playScores[0], playScores[1]);
-    }
-
-    [PunRPC]
-    void RPCUpdateScore(int player1Score, int player2Score) {
-        scoreText.text = $"{player1Score} : {player2Score}";
-    }
 }

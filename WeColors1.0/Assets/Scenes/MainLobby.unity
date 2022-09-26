@@ -396,6 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playButton: {fileID: 615205120}
   mainText: {fileID: 38677258}
+  waitTime: 3
 --- !u!4 &126559057
 Transform:
   m_ObjectHideFlags: 0

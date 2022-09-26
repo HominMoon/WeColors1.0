@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainLobby.unity
     guid: f55446fca2705a04f9984682fd254b0f
   - enabled: 1
-    path: Assets/Scenes/MatchStart.unity
+    path: Assets/Scenes/MatchCounter.unity
     guid: 8bf3e27f1931d054683b61bea00519dd
   - enabled: 1
     path: Assets/Scenes/Game1.unity

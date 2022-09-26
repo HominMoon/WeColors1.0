@@ -10,10 +10,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
 {
     //요약: 로비 관리. 플레이어 매칭, 사용자 닉네임 변경, 로그아웃 등
+    //해야하는 것: 접속, 플레이어2명 입장 시 시간 딜레이 주기 -> 업데이트에서 코루틴
 
     private readonly string gameVersion = "1.0";
     [SerializeField] Button playButton;
     [SerializeField] TMP_Text mainText;
+    [SerializeField] float waitTime = 2f;
 
     void Start()
     {
@@ -69,8 +71,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
 
-        mainText.text = "상대를 찾았습니다!";
-        //Invoke("PhotonLoadLevel", 2f);
-        PhotonNetwork.LoadLevel("Game1");
+        mainText.text = "매치에 입장합니다!";
+
+        StartCoroutine(LoadLevel());
+    }
+
+    IEnumerator LoadLevel()
+    {
+        yield return new WaitForSeconds(waitTime);
+        PhotonNetwork.LoadLevel("MatchCounter");
     }
 }
