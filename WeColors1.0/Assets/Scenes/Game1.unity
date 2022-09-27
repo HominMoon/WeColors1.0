@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 1319046484}
   - component: {fileID: 1319046483}
   - component: {fileID: 1319046485}
+  - component: {fileID: 1319046486}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -681,7 +682,7 @@ MonoBehaviour:
   infoText: {fileID: 2068532024}
   timeText: {fileID: 1952898233}
   countText: {fileID: 2015375577}
-  gameTimer: 60
+  gameTimer: 20
   countTimer: 3
   numberofItemSpawn: 8
   itemSpawnPeriod: 5
@@ -723,6 +724,21 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1319046486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319046482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53cd61f9f783d5240b4acc50219deaed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cubes: []
+  player1CubeCount: 0
+  player2CubeCount: 0
 --- !u!1 &1456901821
 GameObject:
   m_ObjectHideFlags: 0

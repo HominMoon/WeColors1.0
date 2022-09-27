@@ -33,8 +33,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField] float gameTimer = 60f;
     [SerializeField] float countTimer = 3f;
+
     [SerializeField] int numberofItemSpawn = 8;
     [SerializeField] float itemSpawnPeriod = 5f;
+
+    int[] playerScore = new int[PhotonNetwork.PlayerList.Length];
 
 
     int[] playScores;
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             StartCoroutine(GameStart());
             StartCoroutine(ItemManager());
+            StartCoroutine(CountCube());
         }
     }
 
@@ -87,6 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (gameTimer <= 0)
         {
             Time.timeScale = 0f;
+            countText.text = "Finish!";
         }
 
         if ((int)countTimer != 0)
@@ -106,6 +111,28 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
+    IEnumerator CountCube()
+    {
+        yield return new WaitUntil(() => gameTimer <= 0);
+        CubeCounter cubeCounter = GetComponent<CubeCounter>();
+        cubeCounter.CountCubeColor();
+
+        infoText.text = $"{cubeCounter.player1CubeCount} : {cubeCounter.player2CubeCount}";
+
+        if(cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
+        {
+            countText.text = "Player1 Win!";
+        }
+        else if(cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
+        {
+            countText.text = "Player2 Win!";
+        }
+        else if(cubeCounter.player1CubeCount == cubeCounter.player2CubeCount)
+        {
+            countText.text = "Draw";
+        }
     }
 
     private void SpawnPlayer()
@@ -135,9 +162,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
 
+    //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록
     public override void OnLeftRoom()
     {
-        //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록
+        
         base.OnLeftRoom();
 
         SceneManager.LoadScene("MainLobby");
