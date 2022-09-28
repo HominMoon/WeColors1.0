@@ -20,6 +20,7 @@ public class CameraFollow : MonoBehaviourPun
         cinemachineVirtualCamera.Follow = transform;
         var transposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
 
+        cinemachineVirtualCamera.transform.rotation = Quaternion.Euler(45,0,0);
         transposer.m_FollowOffset = new Vector3(0, 6, -6);
 
         if (PhotonNetwork.LocalPlayer.ActorNumber == 2)

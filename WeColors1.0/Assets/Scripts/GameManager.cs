@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             StartCoroutine(GameStart());
             StartCoroutine(ItemManager());
             StartCoroutine(CountCube());
+            //CountCube가 끝나면 MatchCounter로 돌아가야한다.
+            //MatchCounter에서는 Game1의 결과를 바탕으로 포인트 1점 획득.
         }
     }
 
@@ -116,6 +118,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     IEnumerator CountCube()
     {
         yield return new WaitUntil(() => gameTimer <= 0);
+        // 추가 필요: 잠시 대기  2초정도
         CubeCounter cubeCounter = GetComponent<CubeCounter>();
         cubeCounter.CountCubeColor();
 
@@ -124,15 +127,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
         {
             countText.text = "Player1 Win!";
+            MatchCounter.player1Point++;
         }
         else if(cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
         {
             countText.text = "Player2 Win!";
+            MatchCounter.player2Point++;
         }
         else if(cubeCounter.player1CubeCount == cubeCounter.player2CubeCount)
         {
             countText.text = "Draw";
+            MatchCounter.player1Point++;
+            MatchCounter.player2Point++;
         }
+
+        PhotonNetwork.LoadLevel("MatchCounter");
+
     }
 
     private void SpawnPlayer()

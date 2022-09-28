@@ -654,6 +654,8 @@ MonoBehaviour:
   playerReady: {fileID: 9947939}
   player1ReadyText: {fileID: 5935654828131715415}
   player2ReadyText: {fileID: 6839788264519485931}
+  player1PointText: {fileID: 846858927}
+  player2PointText: {fileID: 2136411954}
   isPlayer1Ready: 0
   isPlayer2Ready: 0
 --- !u!4 &539848609

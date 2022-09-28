@@ -16,20 +16,40 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     [SerializeField] float waitTime = 3f;
     [SerializeField] TMP_Text infoText;
+
     [SerializeField] Button playerReady;
     [SerializeField] TMP_Text player1ReadyText;
     [SerializeField] TMP_Text player2ReadyText;
 
+    [SerializeField] TMP_Text player1PointText;
+    [SerializeField] TMP_Text player2PointText;
+
     bool isPlayerNumber2 = false;
-    public bool isPlayer1Ready = false;
-    public bool isPlayer2Ready = false;
+    static bool isInGame = false;
+    static int matchNumber = 0;
+
+    public static bool isPlayer1Ready = false;
+    public static bool isPlayer2Ready = false;
+    public static int player1Point = 0;
+    public static int player2Point = 0;
+
+    private void Start()
+    {
+        if(isInGame)
+        {
+            infoText.text = "다음 게임이 시작됩니다!";
+            StartCoroutine(LoadLevel());
+        }
+        
+    }
 
     private void Update()
     {
-
-        infoText.text = "상대를 기다리는 중입니다...";
-        
-        if(isPlayer1Ready && isPlayer2Ready)
+        if(!isPlayer1Ready || !isPlayer2Ready)
+        {
+            infoText.text = "상대를 기다리는 중입니다...";
+        }
+        else if (isPlayer1Ready && isPlayer2Ready && matchNumber == 0)
         {
             infoText.text = "게임이 시작됩니다!";
             StartCoroutine(LoadLevel());
@@ -64,26 +84,13 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         isPlayer2Ready = true;
     }
 
-    // IEnumerator PlayerNumberCheck()
-    // {
-    //     yield return new WaitUntil(() => isPlayerNumber2 == true);
-    //     StartCoroutine(LoadLevel());
-    //     //Debug.Log("test: " + isPlayerNumber2);
-    // }
-
     IEnumerator LoadLevel()
-    {
+    {   
+        matchNumber++;
+        isInGame = true;
+        Debug.Log("매치넘버" + matchNumber);
         yield return new WaitForSeconds(waitTime);
-        // if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        // {
-        //     Debug.Log("대기 실행");
-        //     StartCoroutine(WaitPlayer());
-        // }
-        PhotonNetwork.LoadLevel("Game1");
+        PhotonNetwork.LoadLevel($"Game{matchNumber}");
     }
 
-    // IEnumerator WaitPlayer()
-    // {
-    //     yield return new WaitForSeconds(waitTime);
-    // }
 }
