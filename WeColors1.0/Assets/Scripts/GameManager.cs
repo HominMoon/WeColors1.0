@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     //요약: Game1의 관리
     //개선 필요: 타임 매니저 동작 개선, 아이템 스폰
+    //개선 필요: 타임 매니저 동작이 동기화되게 -> 현재 각각동작중
+    //개선 필요: 현재 instantiate가 동시에 동작하지 않음 -> 이유: 씬 실행이 동시에 이루어지지 않음
 
     public static GameManager Instance
     {
@@ -32,7 +34,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text countText;
 
     [SerializeField] float gameTimer = 60f;
-    [SerializeField] float countTimer = 3f;
+    [SerializeField] float countTimer = 5f;
 
     [SerializeField] int numberofItemSpawn = 8;
     [SerializeField] float itemSpawnPeriod = 5f;
@@ -46,12 +48,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
+        Time.timeScale = 1f;
+
         countText.text = " ";
         if (PhotonNetwork.PlayerList.Length == 2)
         {
             StartCoroutine(GameStart());
             StartCoroutine(ItemManager());
-            StartCoroutine(CountCube());
+            if(PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC("RPCCountCube", RpcTarget.AllViaServer);
+            }
+            
             //CountCube가 끝나면 MatchCounter로 돌아가야한다.
             //MatchCounter에서는 Game1의 결과를 바탕으로 포인트 1점 획득.
         }
@@ -60,6 +69,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         TimeManager();
+    }
+
+    [PunRPC]
+    void RPCCountCube()
+    {
+        StartCoroutine(CountCube());
     }
 
     IEnumerator GameStart()
@@ -96,7 +111,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             countText.text = "Finish!";
         }
 
-        if ((int)countTimer != 0)
+        if ((int)countTimer != 0 && (int)countTimer <= 3)
         {
             countText.text = $"{countTimer:N0}";
         }
@@ -141,8 +156,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             MatchCounter.player2Point++;
         }
 
-        PhotonNetwork.LoadLevel("MatchCounter");
-
+            PhotonNetwork.LoadLevel("MatchCounter");
     }
 
     private void SpawnPlayer()

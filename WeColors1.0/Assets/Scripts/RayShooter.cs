@@ -16,6 +16,6 @@ public class RayShooter : MonoBehaviourPun
             raycastHit.collider.gameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
         }
 
-        
+        Destroy(this.gameObject);
     }
 }

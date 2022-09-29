@@ -45,6 +45,7 @@ MonoBehaviour:
   - RPCPlayerReady
   - Player1Ready
   - Player2Ready
+  - RPCCountCube
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

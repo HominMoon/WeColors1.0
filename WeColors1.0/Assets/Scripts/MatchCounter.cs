@@ -33,8 +33,13 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     public static int player1Point = 0;
     public static int player2Point = 0;
 
+    private void Awake() {
+        Time.timeScale = 1f;
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
     private void Start()
-    {
+    {   
         if(isInGame)
         {
             infoText.text = "다음 게임이 시작됩니다!";
@@ -52,21 +57,22 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         else if (isPlayer1Ready && isPlayer2Ready && matchNumber == 0)
         {
             infoText.text = "게임이 시작됩니다!";
-            StartCoroutine(LoadLevel());
+            isInGame = true;
+                StartCoroutine(LoadLevel());
         }
     }
 
     public void PlayerReady()
     {
-        //rpc를 사용하면 actornumber가 -1되어 전달된다 수정 필요
+        //rpc를 사용하면 actornumber가 -1되어 전달된다 수정 필요 ->해결
 
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
-            photonView.RPC("Player1Ready", RpcTarget.All);
+            photonView.RPC("Player1Ready", RpcTarget.AllViaServer);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
-            photonView.RPC("Player2Ready", RpcTarget.All);
+            photonView.RPC("Player2Ready", RpcTarget.AllViaServer);
         }
     }
 
@@ -88,7 +94,9 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     {   
         matchNumber++;
         isInGame = true;
+
         Debug.Log("매치넘버" + matchNumber);
+        Debug.Log("waitTime:" + waitTime);
         yield return new WaitForSeconds(waitTime);
         PhotonNetwork.LoadLevel($"Game{matchNumber}");
     }
