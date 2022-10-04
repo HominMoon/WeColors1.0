@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviourPun
@@ -14,14 +15,17 @@ public class PlayerMovement : MonoBehaviourPun
     int playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
 
     [SerializeField] float speed = 5f;
+    [SerializeField] float jumpPower = 5f;
     GameObject joyStick;
     Vector2 playerDirection;
+
+    bool isJump = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rd = GetComponent<Rigidbody>();
-        joyStick =  GameObject.Find("JoyStick");
+        joyStick = GameObject.Find("JoyStick");
     }
 
 
@@ -32,11 +36,9 @@ public class PlayerMovement : MonoBehaviourPun
         {
             return;
         }
-        
+
         playerDirection = joyStick.GetComponent<JoyStick>().inputDirection;
         Move(playerDirection);
-
-
     }
 
     public void Move(Vector2 inputDirection)
@@ -59,21 +61,33 @@ public class PlayerMovement : MonoBehaviourPun
         }
     }
 
-    void OnCollisionEnter(Collision other)
+    public void Jump()
     {
-
-        if (other.gameObject.tag != "Cube")
+        if (!photonView.IsMine || isJump == true)
         {
             return;
         }
+
+        isJump = true;
+        gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse); 
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
         if (!photonView.IsMine)
         {
             return;
         }
 
+        isJump = false;
+
         GameObject collidedGameObject = other.gameObject;
 
-        collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
+        if(other.gameObject.tag == "Cube")
+        {
+            collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
+        }
+
     }
 
     public void PlayerDash()
