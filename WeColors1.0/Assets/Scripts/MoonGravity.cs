@@ -4,16 +4,31 @@ using UnityEngine;
 
 public class MoonGravity : MonoBehaviour
 {
-    [SerializeField] float gravityForce = 1f;
+    private static MoonGravity instance = null;
 
-    private void onTriggerStay(Collision other)
-    {
-        Debug.Log("iscollided");
-        if(other.gameObject.tag == "Player")
+    private void Awake() {
+        if(instance == null)
         {
-            GameObject playerObject = other.gameObject; 
-            playerObject.GetComponent<Rigidbody>().AddForce(Vector3.up * gravityForce, ForceMode.Impulse);
+            instance = this;
+            DontDestroyOnLoad(this.gameObject); 
+        }  
+        else
+        {
+            Destroy(this.gameObject);
         }
-        
     }
+
+    public static MoonGravity Instance
+    {
+        get
+        {
+            if(instance == null)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
+
+    public float gravityForce = 1f;
 }

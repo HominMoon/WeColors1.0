@@ -90,6 +90,18 @@ public class PlayerMovement : MonoBehaviourPun
 
     }
 
+    private void OnTriggerStay(Collider other) {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+        if(other.gameObject.tag == "MZone")
+        {
+            isJump = false;
+            GetComponent<Rigidbody>().AddForce(Vector3.up * MoonGravity.Instance.gravityForce , ForceMode.Impulse);
+        }
+    }
+
     public void PlayerDash()
     {
         speed *= 2f;
