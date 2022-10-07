@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Spinner : MonoBehaviour
+public class Spinner : MonoBehaviourPun
 {
-    [SerializeField] float rotateSpeed = 10f;
+    [SerializeField] float xval = 1f;
+    [SerializeField] float yval = 1f;
+    [SerializeField] float zval = 1f;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +19,9 @@ public class Spinner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
+        transform.Rotate(new Vector3(
+        xval * Time.deltaTime, 
+        yval * Time.deltaTime, 
+        zval * Time.deltaTime));
     }
 }

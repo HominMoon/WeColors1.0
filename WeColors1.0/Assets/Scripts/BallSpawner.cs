@@ -16,6 +16,7 @@ public class BallSpawner : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        //if (!PhotonNetwork.IsMasterClient) { return; }
         StartCoroutine(Spawn());
     }
 
@@ -24,6 +25,7 @@ public class BallSpawner : MonoBehaviourPun
         spawnRandomTime = Random.Range(minSpawnRange, maxSpawnRange);
         yield return new WaitForSeconds(spawnRandomTime);
         Instantiate(Ball, transform.position, transform.rotation);
+        //PhotonNetwork.Instantiate(Ball.name, transform.position, transform.rotation); // -> 실제 사용
         StartCoroutine(Spawn());
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Game2Ball : MonoBehaviour
 {
+    [SerializeField] float lifeCycle = 15f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -12,7 +14,7 @@ public class Game2Ball : MonoBehaviour
 
     IEnumerator DestroyObject()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(lifeCycle);
         Destroy(this.gameObject);
     }
 }
