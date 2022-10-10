@@ -33,7 +33,7 @@ public class RespawnArea : MonoBehaviourPun
         }
     }
 
-    private void OnTriggerEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.GetPhotonView().IsMine) { return; }
 
@@ -42,6 +42,8 @@ public class RespawnArea : MonoBehaviourPun
             SettingRespawnArea();
         }
     }
+
+
 
     public Vector3 SettingRespawnArea()
     {

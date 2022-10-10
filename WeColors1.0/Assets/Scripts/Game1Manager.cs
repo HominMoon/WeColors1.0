@@ -1,33 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviourPunCallbacks
+public class Game1Manager : MonoBehaviourPunCallbacks
 {
-    //요약: Game1의 관리
-    //개선 필요: 타임 매니저 동작 개선, 아이템 스폰
-    //개선 필요: 타임 매니저 동작이 동기화되게 -> 현재 각각동작중
-    //개선 필요: 현재 instantiate가 동시에 동작하지 않음 -> 이유: 씬 실행이 동시에 이루어지지 않음
-    //개선방안1. 씬이 시작되면 instantiate를 각각하고 두 플레이어가 모두 생성 된 후 에 타이머 시작하도록 한다.
 
-    //게임 타이머를 코루틴으로 실행하는게 더 좋을것으로 보임
-    // -> start 에서 
-    //플레이어를 제외한 게임 요소들은 호스트에서 동작하도록 변경
+    private static Game1Manager instance = null;
 
-    public static GameManager Instance
+    private void Awake() {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject); 
+        }  
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public static Game1Manager Instance
     {
         get
         {
-            if (instance == null) instance = FindObjectOfType<GameManager>();
-
+            if(instance == null)
+            {
+                return null;
+            }
             return instance;
         }
     }
-    private static GameManager instance;
 
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject itemPrefab;
@@ -39,106 +44,121 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text countText;
 
     [SerializeField] float gameTimer = 60f;
-    [SerializeField] float countTimer = 5f;
+    [SerializeField] int countTimer = 3;
 
     [SerializeField] int numberofItemSpawn = 8;
     [SerializeField] float itemSpawnPeriod = 5f;
 
     int[] playerScore = new int[PhotonNetwork.PlayerList.Length];
 
+    int playerInstantiateCount = 0;
+
 
     int[] playScores;
     float timer = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
-        Time.timeScale = 1f;
-
         countText.text = " ";
-        if (PhotonNetwork.PlayerList.Length == 2)
+
+        StartCoroutine(Wait());
+
+        SpawnPlayer();
+        StartCoroutine(WaitPlayer());
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    IEnumerator WaitPlayer()
+    {
+        yield return new WaitUntil(() => playerInstantiateCount == 2);
+        StartCoroutine(TimeManager());
+    }
+
+
+    IEnumerator TimeManager()
+    {
+        StartCoroutine(StartCounter());
+        yield return new WaitUntil(() => countTimer == 0);
+        //플레이어가 생성되면 공중에서 움직이지 못하도록 한다. -> 카운트 후 움직일 수 있음
+        //PlayerRelease(); -> playerMovement에서 관리
+
+        SpawnItem();
+        StartCoroutine(GameStart()); //게임 시작
+        
+    }
+
+    IEnumerator StartCounter()
+    {
+        if(countTimer >= 0)
         {
-            StartCoroutine(GameStart());
-            StartCoroutine(ItemManager());
-            if(PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC("RPCCountCube", RpcTarget.AllViaServer);
-            }
-            
-            //CountCube가 끝나면 MatchCounter로 돌아가야한다.
-            //MatchCounter에서는 Game1의 결과를 바탕으로 포인트 1점 획득.
+            countText.text = $"{countTimer}";
         }
+        else if(countTimer < 0)
+        {
+            timeText.text = $"{-countTimer}";
+        }
+
+        
+        yield return new WaitForSeconds(1f);
+        countTimer -= 1;
+        StartCoroutine(StartCounter());
     }
 
-    private void Update()
-    {
-        TimeManager();
-    }
-
-    [PunRPC]
-    void RPCCountCube()
-    {
-        StartCoroutine(CountCube());
-    }
 
     IEnumerator GameStart()
     {
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(Spawn());
+        StartCoroutine(ItemManager());
+        yield return new WaitForSeconds(gameTimer); //60초간 게임 진행
+        StartCoroutine(GameStop());
+        
     }
 
-    IEnumerator Spawn()
+    IEnumerator GameStop()
     {
-        yield return new WaitUntil(() => countTimer <= 0);
-        SpawnPlayer();
-        SpawnItem();
+        //게임 시간을 멈추지 말고 플레이어만 멈추자
+        //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(CountCube());
     }
 
     IEnumerator ItemManager()
     {
-        //아이템 스폰 일정 간격마다 실행
         yield return new WaitForSeconds(itemSpawnPeriod);
         SpawnItem();
         StartCoroutine(ItemManager());
     }
 
-    private void TimeManager()
-    {
-        // 좀 더 일정한 간격으로 동작하게 수정
-
-        timer += Time.deltaTime;
-        countTimer -= Time.deltaTime;
-
-        if (gameTimer <= 0)
-        {
-            Time.timeScale = 0f;
-            countText.text = "Finish!";
-        }
-
-        if ((int)countTimer != 0 && (int)countTimer <= 3)
-        {
-            countText.text = $"{countTimer:N0}";
-        }
-        else
-        {
-            countText.text = "START!";
-        }
-
-        if (gameTimer <= 60 && timer >= 3)
-        {
-            countText.gameObject.SetActive(false);
-            gameTimer -= Time.deltaTime;
-            timeText.text = $"{gameTimer:N0}";
-        }
-
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
-    }
-
     IEnumerator CountCube()
     {
-        yield return new WaitUntil(() => gameTimer <= 0);
-        // 추가 필요: 잠시 대기  2초정도
+        yield return new WaitForSeconds(1f);
+
+        photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
+
+        photonView.RPC("RPCLoadLevel", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void RPCLoadLevel()
+    {
+        PhotonNetwork.LoadLevel("MatchCounter");
+    }
+
+    [PunRPC]
+    void RPCAddPoint()
+    {
         CubeCounter cubeCounter = GetComponent<CubeCounter>();
         cubeCounter.CountCubeColor();
 
@@ -147,6 +167,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
         {
             countText.text = "Player1 Win!";
+            // rpc로 수행
             MatchCounter.player1Point++;
         }
         else if(cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
@@ -160,8 +181,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             MatchCounter.player1Point++;
             MatchCounter.player2Point++;
         }
-
-            PhotonNetwork.LoadLevel("MatchCounter");
     }
 
     private void SpawnPlayer()
@@ -172,12 +191,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
             PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
             PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
         }
 
+        // 위 플레이어 생성 나눌 필요 있는지 검토 필요
+
+    }
+
+    [PunRPC]
+    void RPCplayerCount()
+    {
+        playerInstantiateCount++;
     }
 
     public void SpawnItem()
@@ -199,5 +228,4 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         SceneManager.LoadScene("MainLobby");
     }
-
 }
