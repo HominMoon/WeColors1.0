@@ -1155,6 +1155,7 @@ MonoBehaviour:
   countTimer: 3
   numberofItemSpawn: 8
   itemSpawnPeriod: 5
+  playerList: []
 --- !u!1001 &4316724372351390842
 PrefabInstance:
   m_ObjectHideFlags: 0

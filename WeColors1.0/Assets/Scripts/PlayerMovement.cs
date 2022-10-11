@@ -111,6 +111,14 @@ public class PlayerMovement : MonoBehaviourPun
                                 RigidbodyConstraints.FreezeRotationZ;
     }
 
+    public void PlayerStop()
+    {
+        Rigidbody m_Rigidbody;
+        m_Rigidbody = GetComponent<Rigidbody>();
+
+        m_Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
     void OnCollisionEnter(Collision other)
     {
         if (!photonView.IsMine)

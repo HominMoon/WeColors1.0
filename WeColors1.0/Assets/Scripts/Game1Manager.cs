@@ -34,6 +34,8 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         }
     }
 
+    #region variable
+
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Transform[] spawnPositions;
@@ -43,13 +45,14 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text timeText;
     [SerializeField] TMP_Text countText;
 
-    [SerializeField] float gameTimer = 60f;
+    [SerializeField] int gameTimer = 60;
     [SerializeField] int countTimer = 3;
 
     [SerializeField] int numberofItemSpawn = 8;
     [SerializeField] float itemSpawnPeriod = 5f;
 
     int[] playerScore = new int[PhotonNetwork.PlayerList.Length];
+    [SerializeField] GameObject[] playerList;
 
     int playerInstantiateCount = 0;
 
@@ -57,27 +60,40 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     int[] playScores;
     float timer = 0;
 
+    #endregion
 
-    // Start is called before the first frame update
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         countText.text = " ";
 
         StartCoroutine(Wait());
-
-        SpawnPlayer();
         StartCoroutine(WaitPlayer());
     }
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1f);
+        SpawnPlayer();
+        yield return new WaitForSeconds(2f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SpawnPlayer()
     {
+        int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+        Transform spawnPosition = spawnPositions[localplayerIndex];
+
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
+        }
+
+        // 위 플레이어 생성 나눌 필요 있는지 검토 필요
 
     }
 
@@ -93,11 +109,22 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         StartCoroutine(StartCounter());
         yield return new WaitUntil(() => countTimer == 0);
         //플레이어가 생성되면 공중에서 움직이지 못하도록 한다. -> 카운트 후 움직일 수 있음
-        //PlayerRelease(); -> playerMovement에서 관리
+
+        GamePlayerRelease();
 
         SpawnItem();
         StartCoroutine(GameStart()); //게임 시작
-        
+
+    }
+
+    private void GamePlayerRelease()
+    {
+        playerList = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            playerList[i].GetComponent<PlayerMovement>().PlayerRelease();
+        }
     }
 
     IEnumerator StartCounter()
@@ -121,17 +148,9 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     IEnumerator GameStart()
     {
         StartCoroutine(ItemManager());
-        yield return new WaitForSeconds(gameTimer); //60초간 게임 진행
+        yield return new WaitUntil(() => -countTimer == gameTimer); //60초간 게임 진행
         StartCoroutine(GameStop());
         
-    }
-
-    IEnumerator GameStop()
-    {
-        //게임 시간을 멈추지 말고 플레이어만 멈추자
-        //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(CountCube());
     }
 
     IEnumerator ItemManager()
@@ -139,6 +158,27 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(itemSpawnPeriod);
         SpawnItem();
         StartCoroutine(ItemManager());
+    }
+
+    IEnumerator GameStop()
+    {
+        //게임 시간을 멈추지 말고 플레이어만 멈추자
+        //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
+
+        GamePlayerStop();
+
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(CountCube());
+    }
+
+    private void GamePlayerStop()
+    {
+        playerList = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            playerList[i].GetComponent<PlayerMovement>().PlayerStop();
+        }
     }
 
     IEnumerator CountCube()
@@ -181,26 +221,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
             MatchCounter.player1Point++;
             MatchCounter.player2Point++;
         }
-    }
-
-    private void SpawnPlayer()
-    {
-        int localplayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-        Transform spawnPosition = spawnPositions[localplayerIndex];
-
-        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        {
-            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
-            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
-        }
-        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
-        {
-            PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
-            photonView.RPC("RPCplayerCount", RpcTarget.AllViaServer);
-        }
-
-        // 위 플레이어 생성 나눌 필요 있는지 검토 필요
-
     }
 
     [PunRPC]
