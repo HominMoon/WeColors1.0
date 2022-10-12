@@ -11,6 +11,8 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     private static Game1Manager instance = null;
 
     private void Awake() {
+        PhotonNetwork.IsMessageQueueRunning = true;
+        
         if(instance == null)
         {
             instance = this;
@@ -64,7 +66,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
         countText.text = " ";
 
         StartCoroutine(Wait());
@@ -73,8 +74,9 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     IEnumerator Wait()
     {
+        
+        yield return new WaitForSeconds(3f);
         SpawnPlayer();
-        yield return new WaitForSeconds(2f);
     }
 
     private void SpawnPlayer()

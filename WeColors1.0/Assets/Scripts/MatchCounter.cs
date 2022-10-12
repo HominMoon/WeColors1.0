@@ -58,7 +58,7 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         {
             infoText.text = "게임이 시작됩니다!";
             isInGame = true;
-                StartCoroutine(LoadLevel());
+            StartCoroutine(LoadLevel());
         }
     }
 
@@ -92,12 +92,15 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     IEnumerator LoadLevel()
     {   
+        PhotonNetwork.IsMessageQueueRunning = false;
         matchNumber++;
         isInGame = true;
 
         Debug.Log("매치넘버" + matchNumber);
         Debug.Log("waitTime:" + waitTime);
+
         yield return new WaitForSeconds(waitTime);
+
         PhotonNetwork.LoadLevel($"Game{matchNumber}");
     }
 

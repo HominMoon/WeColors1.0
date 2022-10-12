@@ -9,34 +9,6 @@ public class PlayerMovement : MonoBehaviourPun
     //요약: 플레이어를 조이스틱의 벡터를 받아와 이동시킨다.
     //수정 필요: 플레이어의 충돌에 대한 내용이 같이 쓰여 있으므로 분리 필요
 
-
-    private static PlayerMovement instance = null;
-
-    private void Awake() {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject); 
-        }  
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
-
-    public static PlayerMovement Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                return null;
-            }
-            return instance;
-        }
-    }
-
-
     Rigidbody rd;
     Transform tr;
 
