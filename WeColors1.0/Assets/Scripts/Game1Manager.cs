@@ -10,14 +10,14 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     private static Game1Manager instance = null;
 
-    private void Awake() {
+    private void Awake()
+    {
         PhotonNetwork.IsMessageQueueRunning = true;
-        
-        if(instance == null)
+
+        if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject); 
-        }  
+        }
         else
         {
             Destroy(this.gameObject);
@@ -28,7 +28,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 return null;
             }
@@ -68,13 +68,13 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     {
         countText.text = " ";
 
-        StartCoroutine(Wait());
+        StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
     }
 
-    IEnumerator Wait()
+    IEnumerator WaitAndSpawn()
     {
-        
+
         yield return new WaitForSeconds(3f);
         SpawnPlayer();
     }
@@ -116,7 +116,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
         SpawnItem();
         StartCoroutine(GameStart()); //게임 시작
-
     }
 
     private void GamePlayerRelease()
@@ -131,16 +130,20 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     IEnumerator StartCounter()
     {
-        if(countTimer >= 0)
+        if (countTimer > 0)
         {
             countText.text = $"{countTimer}";
         }
-        else if(countTimer < 0)
+        else if (countTimer == 0)
         {
-            timeText.text = $"{-countTimer}";
+            countText.text = "START!";
+        }
+        else if (countTimer < 0 || countTimer + gameTimer > 0)
+        {
+            countText.text = " ";
+            timeText.text = $"{gameTimer + countTimer}";
         }
 
-        
         yield return new WaitForSeconds(1f);
         countTimer -= 1;
         StartCoroutine(StartCounter());
@@ -150,9 +153,12 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     IEnumerator GameStart()
     {
         StartCoroutine(ItemManager());
-        yield return new WaitUntil(() => -countTimer == gameTimer); //60초간 게임 진행
+
+        yield return new WaitUntil(() => gameTimer + countTimer == 0); //60초간 게임 진행
+
+        timeText.gameObject.SetActive(false);
         StartCoroutine(GameStop());
-        
+
     }
 
     IEnumerator ItemManager()
@@ -166,10 +172,11 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     {
         //게임 시간을 멈추지 말고 플레이어만 멈추자
         //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
-
         GamePlayerStop();
 
-        yield return new WaitForSeconds(2f);
+        countText.text = "Game!";
+
+        yield return new WaitForSeconds(3f);
         StartCoroutine(CountCube());
     }
 
@@ -185,17 +192,17 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     IEnumerator CountCube()
     {
-        yield return new WaitForSeconds(1f);
+        AddPoint();
 
-        photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
+        yield return new WaitForSeconds(3f);
 
-        photonView.RPC("RPCLoadLevel", RpcTarget.AllViaServer);
+        StartCoroutine(WaitRPCLoadLevel());
     }
 
-    [PunRPC]
-    void RPCLoadLevel()
+    void AddPoint()
     {
-        PhotonNetwork.LoadLevel("MatchCounter");
+        if(!PhotonNetwork.IsMasterClient) { return; }
+        photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
     }
 
     [PunRPC]
@@ -206,23 +213,29 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
         infoText.text = $"{cubeCounter.player1CubeCount} : {cubeCounter.player2CubeCount}";
 
-        if(cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
+        if (cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
         {
             countText.text = "Player1 Win!";
             // rpc로 수행
             MatchCounter.player1Point++;
         }
-        else if(cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
+        else if (cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
         {
             countText.text = "Player2 Win!";
             MatchCounter.player2Point++;
         }
-        else if(cubeCounter.player1CubeCount == cubeCounter.player2CubeCount)
+        else if (cubeCounter.player1CubeCount == cubeCounter.player2CubeCount)
         {
             countText.text = "Draw";
             MatchCounter.player1Point++;
             MatchCounter.player2Point++;
         }
+    }
+
+    IEnumerator WaitRPCLoadLevel()
+    {
+        yield return new WaitForSeconds(2f);
+        PhotonNetwork.LoadLevel("MatchCounter");
     }
 
     [PunRPC]
@@ -245,7 +258,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록
     public override void OnLeftRoom()
     {
-        
+
         base.OnLeftRoom();
 
         SceneManager.LoadScene("MainLobby");

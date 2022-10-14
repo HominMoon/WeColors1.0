@@ -40,6 +40,15 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     private void Start()
     {   
+        player1PointText.text = $"{player1Point}";
+        player2PointText.text = $"{player2Point}";
+
+        if(player1Point == 3 || player2Point == 3)
+        {
+            isInGame = false;
+            infoText.text = "게임이 끝났습니다!";
+        }
+
         if(isInGame)
         {
             infoText.text = "다음 게임이 시작됩니다!";
