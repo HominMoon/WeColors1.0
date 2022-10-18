@@ -2,32 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Follower : MonoBehaviourPun
 {
     int followingPlayerNumber;
+    [SerializeField] float followingRange = 5f; 
     [SerializeField] GameObject followingPlayer;
+    [SerializeField] NavMeshAgent navMeshAgent;
 
     // Start is called before the first frame update
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (followingPlayerNumber == 1)
-        {
-            transform.Translate(followingPlayer.transform.position);
-        }
+        navMeshAgent.SetDestination(followingPlayer.transform.position);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag != "Painter" || other.gameObject.tag != "Player") { return; }
+    // 플레이어가 휘둘러서 맞는 Painter의 태그가 1이냐 2냐에 따라 따라다니는 플레이어를 설정
 
-        // 게임 매니저에서 플레이어 목록 만들어서 목록 중 color로 판별
-        
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.tag == "Player1")
+        {
+            followingPlayer = Game3Manager.Instance.playerList[0];
+        }
+        else if(other.gameObject.tag == "Player2")
+        {
+            followingPlayer = Game3Manager.Instance.playerList[1];
+        }
     }
 }
