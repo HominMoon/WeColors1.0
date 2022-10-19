@@ -7633,11 +7633,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3783a03918ea2fc41a7ee1c5161a4ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  playerPrefab: {fileID: 6801597466779941016, guid: c7b1fb9adac2dee44b0660c89cc82462, type: 3}
+  itemPrefab: {fileID: 2212904232088362487, guid: adcf7a7c35109bc4da65c680486f928f, type: 3}
   spawnPositions: []
-  infoText: {fileID: 0}
-  countText: {fileID: 0}
+  infoText: {fileID: 2068532024}
+  countText: {fileID: 2015375577}
   countTimer: 3
   numberofItemSpawn: 8
   playerList: []

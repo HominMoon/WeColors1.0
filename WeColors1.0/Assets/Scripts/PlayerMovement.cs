@@ -20,6 +20,9 @@ public class PlayerMovement : MonoBehaviourPun
     Vector2 playerDirection;
 
     bool isJump = false;
+    bool isAttack = false;
+
+    [SerializeField] GameObject painter;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +73,30 @@ public class PlayerMovement : MonoBehaviourPun
 
         isJump = true;
         gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse); 
+    }
+
+    public void Attack()
+    {
+        if (!photonView.IsMine || isAttack == true)
+        {
+            return;
+        }
+
+        isAttack = true;
+        Paint();
+    }
+
+    public void Paint()
+    {
+        StartCoroutine(RPaint());
+    }
+
+    IEnumerator RPaint()
+    {
+        painter.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        isAttack = false;
+        painter.SetActive(false);
     }
 
     public void PlayerRelease()
