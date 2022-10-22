@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System;
 
 public class PlayerMovement : MonoBehaviourPun
 {
@@ -18,9 +19,13 @@ public class PlayerMovement : MonoBehaviourPun
     [SerializeField] float jumpPower = 5f;
     GameObject joyStick;
     Vector2 playerDirection;
+    GameObject platformUnderPlayer;
+    Vector3 distanceofPlatform;
 
     bool isJump = false;
     bool isAttack = false;
+    public bool isMove = false;
+    bool isOnPlatform = false;
 
     [SerializeField] GameObject painter;
 
@@ -42,6 +47,14 @@ public class PlayerMovement : MonoBehaviourPun
 
         playerDirection = joyStick.GetComponent<JoyStick>().inputDirection;
         Move(playerDirection);
+        OnPlatformMovement();
+    }
+
+    private void OnPlatformMovement()
+    {
+        if(!isOnPlatform || isMove) { return; }
+
+        transform.position = platformUnderPlayer.transform.position - distanceofPlatform;
     }
 
     public void Move(Vector2 inputDirection)
@@ -51,7 +64,7 @@ public class PlayerMovement : MonoBehaviourPun
             return;
         }
 
-        bool isMove = inputDirection.magnitude != 0;
+        isMove = inputDirection.magnitude != 0;
 
         Debug.Log(isMove);
 
@@ -118,7 +131,7 @@ public class PlayerMovement : MonoBehaviourPun
         m_Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionStay(Collision other)
     {
         if (!photonView.IsMine)
         {
@@ -134,6 +147,25 @@ public class PlayerMovement : MonoBehaviourPun
             collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
         }
 
+        if(other.gameObject.tag == "Platform")
+        {
+            if(!isMove)
+            {
+                transform.position = transform.position;
+            }
+
+            platformUnderPlayer = other.gameObject;
+            isOnPlatform = true;
+            distanceofPlatform = platformUnderPlayer.transform.position - transform.position;
+        }
+
+    }
+
+    void OnCollisionExit(Collision other) {
+        if(other.gameObject.tag == "Platform")
+        {
+            isOnPlatform = false;
+        }
     }
 
     private void OnTriggerStay(Collider other) {

@@ -9,6 +9,7 @@ TagManager:
   - Cube
   - MZone
   - DontFall
+  - Platform
   layers:
   - Default
   - TransparentFX

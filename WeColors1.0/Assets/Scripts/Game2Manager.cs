@@ -11,8 +11,6 @@ public class Game2Manager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        PhotonNetwork.IsMessageQueueRunning = true;
-
         if (instance == null)
         {
             instance = this;
@@ -50,7 +48,7 @@ public class Game2Manager : MonoBehaviourPunCallbacks
 
     int[] playerScore = new int[PhotonNetwork.PlayerList.Length];
     [SerializeField] GameObject[] playerList;
-    [SerializeField] GameObject winner;
+    public GameObject winner;
 
     int playerInstantiateCount = 0;
 

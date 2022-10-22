@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class Game2Respawn : MonoBehaviourPun
+public class Game2Respawn : MonoBehaviour
 {
     private static Game2Respawn instance = null;
 
@@ -34,14 +33,12 @@ public class Game2Respawn : MonoBehaviourPun
 
     public Vector3 playerRespawnArea;
 
-    private void OnCollisionEnter(Collision other) {
-        
-        GameObject player = other.collider.gameObject;
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag != "Player") { return; }
 
-        if(!player.GetPhotonView().IsMine) { return; }
+        GameObject player = other.gameObject;
 
-        player.transform.Translate(playerRespawnArea);
-        
-        
+        player.transform.position = playerRespawnArea + new Vector3(4,2,0);
     }
 }

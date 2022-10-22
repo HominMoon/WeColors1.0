@@ -12,8 +12,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        PhotonNetwork.IsMessageQueueRunning = true;
-
         if (instance == null)
         {
             instance = this;
@@ -235,6 +233,11 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     IEnumerator WaitRPCLoadLevel()
     {
         yield return new WaitForSeconds(2f);
+        HostLoadLevel();
+    }
+
+    void HostLoadLevel()
+    {
         PhotonNetwork.LoadLevel("MatchCounter");
     }
 

@@ -25,6 +25,7 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text player2PointText;
 
     bool isPlayerNumber2 = false;
+    bool isHostLoadLevelSucess;
     static bool isInGame = false;
     static int matchNumber = 0;
 
@@ -100,8 +101,7 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     }
 
     IEnumerator LoadLevel()
-    {   
-        PhotonNetwork.IsMessageQueueRunning = false;
+    {
         matchNumber++;
         isInGame = true;
 
@@ -109,8 +109,33 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         Debug.Log("waitTime:" + waitTime);
 
         yield return new WaitForSeconds(waitTime);
+        HostLoadLevel();
+        StartCoroutine(HostLoadingLevel());
+    }
+
+    void HostLoadLevel()
+    {
+        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+           return;
+        }
+        PhotonNetwork.LoadLevel($"Game{matchNumber}"); 
+    }
+    
+    IEnumerator HostLoadingLevel()
+    {
+        yield return new WaitForSeconds(0.01f);
+
+        ClientLoadLevel();
+    }
+    
+    void ClientLoadLevel()
+    {
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+           return;
+        }
 
         PhotonNetwork.LoadLevel($"Game{matchNumber}");
     }
-
 }
