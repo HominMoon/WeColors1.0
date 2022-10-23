@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FinishLine : MonoBehaviour
 {
-    Game2Manager gameManager;
+    [SerializeField] Game2Manager gameManager;
 
     private void OnCollisionEnter(Collision other)
     {

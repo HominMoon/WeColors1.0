@@ -634,6 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpPower: 50
+  isMove: 0
   painter: {fileID: 4655895573063533769}
 --- !u!114 &3490108323908753020
 MonoBehaviour:
