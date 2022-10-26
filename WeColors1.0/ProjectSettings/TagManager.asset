@@ -10,6 +10,7 @@ TagManager:
   - MZone
   - DontFall
   - Platform
+  - BossAttack
   layers:
   - Default
   - TransparentFX
