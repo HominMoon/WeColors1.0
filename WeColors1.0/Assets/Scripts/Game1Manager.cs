@@ -97,6 +97,12 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     }
 
+    [PunRPC]
+    void RPCplayerCount()
+    {
+        playerInstantiateCount++;
+    }
+
     IEnumerator WaitPlayer()
     {
         yield return new WaitUntil(() => playerInstantiateCount == 2);
@@ -241,11 +247,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MatchCounter");
     }
 
-    [PunRPC]
-    void RPCplayerCount()
-    {
-        playerInstantiateCount++;
-    }
 
     public void SpawnItem()
     {

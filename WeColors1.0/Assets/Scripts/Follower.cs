@@ -29,10 +29,12 @@ public class Follower : MonoBehaviourPun
         if(other.gameObject.tag == "Player1")
         {
             followingPlayer = Game3Manager.Instance.playerList[0];
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
         }
         else if(other.gameObject.tag == "Player2")
         {
             followingPlayer = Game3Manager.Instance.playerList[1];
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
         }
     }
 }

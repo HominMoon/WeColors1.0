@@ -43,8 +43,10 @@ public class Game3Manager : MonoBehaviourPunCallbacks
 
     [SerializeField] TMP_Text infoText;
     [SerializeField] TMP_Text countText;
+    [SerializeField] TMP_Text timeText;
 
     [SerializeField] int countTimer = 3;
+    [SerializeField] int gameTimer = 60;
 
     [SerializeField] int numberofItemSpawn = 8;
 
@@ -133,6 +135,11 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         {
             countText.text = "START!";
         }
+        else if (countTimer < 0 || countTimer + gameTimer > 0)
+        {
+            countText.text = " ";
+            timeText.text = $"{gameTimer + countTimer}";
+        }
 
         yield return new WaitForSeconds(1f);
         countTimer -= 1;
@@ -156,7 +163,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         countText.text = "Game!";
 
         yield return new WaitForSeconds(3f);
-        StartCoroutine(WinnerAnnounce());
+        StartCoroutine(CountFollower());
     }
 
     private void GamePlayerStop()
@@ -169,22 +176,46 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator WinnerAnnounce()
+    IEnumerator CountFollower()
     {
-        if( winner.GetPhotonView().OwnerActorNr == 1)
-        {
-            countText.text = "Player1 Win!";
-            MatchCounter.player1Point++;
-        }
-        else if( winner.GetPhotonView().OwnerActorNr == 2)
-        {
-            countText.text = "Player2 Win!";
-            MatchCounter.player2Point++;
-        }
+        AddPoint();
 
         yield return new WaitForSeconds(3f);
 
         StartCoroutine(WaitLoadLevel());
+    }
+
+    void AddPoint()
+    {
+        if(!PhotonNetwork.IsMasterClient) { return; }
+        photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void RPCAddPoint()
+    {
+        FollwerCount follwerCounter = GetComponent<FollwerCount>();
+        follwerCounter.CountFollowerColor();
+
+        infoText.text = $"{follwerCounter.player1FollowerCount} : {follwerCounter.player2FollowerCount}";
+
+        if (follwerCounter.player1FollowerCount > follwerCounter.player2FollowerCount)
+        {
+            countText.text = "Player1 Win!";
+            // rpc로 수행
+            MatchCounter.player1Point++;
+        }
+        else if (follwerCounter.player1FollowerCount < follwerCounter.player2FollowerCount)
+        {
+            countText.text = "Player2 Win!";
+            MatchCounter.player2Point++;
+        }
+        else if (follwerCounter.player1FollowerCount == follwerCounter.player2FollowerCount)
+        {
+            countText.text = "Draw";
+            MatchCounter.player1Point++;
+            MatchCounter.player2Point++;
+        }
     }
 
     IEnumerator WaitLoadLevel()
