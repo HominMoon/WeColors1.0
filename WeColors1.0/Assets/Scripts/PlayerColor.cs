@@ -13,9 +13,15 @@ public class PlayerColor : MonoBehaviourPun
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetPlayerTag()
     {
-        
+        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            gameObject.tag = "Player1";
+        }
+        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            gameObject.tag = "Player2";
+        }
     }
 }

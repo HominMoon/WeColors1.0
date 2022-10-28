@@ -58,6 +58,8 @@ public class Game3Manager : MonoBehaviourPunCallbacks
 
     float timer = 0;
 
+    bool isGameEnd = false;
+
     #endregion
 
     void Start()
@@ -100,7 +102,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitPlayer()
     {
-        yield return new WaitUntil(() => playerInstantiateCount == 2);
+        yield return new WaitUntil(() => playerInstantiateCount >= 2);
         StartCoroutine(TimeManager());
     }
 
@@ -122,6 +124,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerRelease();
+            playerList[i].GetComponent<PlayerColor>().SetPlayerTag();
         }
     }
 
@@ -160,6 +163,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
         GamePlayerStop();
 
+        isGameEnd = true;
         countText.text = "Game!";
 
         yield return new WaitForSeconds(3f);

@@ -1,41 +1,59 @@
 {
     "m_SelectedDeviceId": "R3CR30PDZ8M",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "R3CR30PDZ8M",
+        "name": "com.deltatime.wecolors",
+        "processId": 6311,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.sec.android.app.launcher",
-            "processId": 2507,
+            "name": "com.deltatime.wecolors",
+            "processId": 28855,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.vanced.android.youtube",
+            "processId": 29572,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 18386,
+            "processId": 30602,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 19345,
+            "processId": 3090,
             "exited": true
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.vanced.android.youtube",
+            "processId": 31167,
+            "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 22738,
-            "exited": true
+            "processId": 4179,
+            "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.dcinside.app.android",
-            "processId": 6778,
+            "name": "com.deltatime.wecolors",
+            "processId": 5295,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 6311,
             "exited": false
         }
     ],
