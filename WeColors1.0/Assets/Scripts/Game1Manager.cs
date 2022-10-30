@@ -56,8 +56,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     int playerInstantiateCount = 0;
 
-
-    int[] playScores;
     float timer = 0;
 
     bool isGameEnd = false;
@@ -67,6 +65,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     void Start()
     {
         countText.text = " ";
+        PhotonNetwork.IsMessageQueueRunning = true;
 
         StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
@@ -74,7 +73,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitAndSpawn()
     {
-
         yield return new WaitForSeconds(3f);
         SpawnPlayer();
     }
@@ -131,7 +129,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerRelease();
-            playerList[i].GetComponent<PlayerColor>().SetPlayerTag();
+            playerList[i].GetComponent<BrushTag>().SetPlayerBrushTag();
         }
     }
 
@@ -204,13 +202,23 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(3f);
 
+        DestroyPlayers();
+
         StartCoroutine(WaitRPCLoadLevel());
     }
 
     void AddPoint()
     {
-        if(!PhotonNetwork.IsMasterClient) { return; }
+        if (!PhotonNetwork.IsMasterClient) { return; }
         photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
+    }
+
+    void DestroyPlayers()
+    {
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            Destroy(playerList[i]);
+        }
     }
 
     [PunRPC]
@@ -243,6 +251,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     IEnumerator WaitRPCLoadLevel()
     {
         yield return new WaitForSeconds(2f);
+
         HostLoadLevel();
     }
 

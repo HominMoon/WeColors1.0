@@ -65,6 +65,8 @@ public class Game3Manager : MonoBehaviourPunCallbacks
     void Start()
     {
         countText.text = " ";
+        PhotonNetwork.IsMessageQueueRunning = true;
+        
         StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
     }
@@ -124,7 +126,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerRelease();
-            playerList[i].GetComponent<PlayerColor>().SetPlayerTag();
+            playerList[i].GetComponent<BrushTag>().SetPlayerBrushTag();
         }
     }
 
@@ -151,8 +153,9 @@ public class Game3Manager : MonoBehaviourPunCallbacks
 
     IEnumerator GameStart()
     {
-        yield return new WaitUntil(() => winner != null); //60초간 게임 진행
+        yield return new WaitUntil(() => gameTimer + countTimer == 0); //60초간 게임 진행
 
+        timeText.gameObject.SetActive(false);
         StartCoroutine(GameStop());
 
     }
@@ -186,6 +189,8 @@ public class Game3Manager : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(3f);
 
+        DestroyPlayers();
+
         StartCoroutine(WaitLoadLevel());
     }
 
@@ -193,6 +198,14 @@ public class Game3Manager : MonoBehaviourPunCallbacks
     {
         if(!PhotonNetwork.IsMasterClient) { return; }
         photonView.RPC("RPCAddPoint", RpcTarget.AllViaServer);
+    }
+
+    void DestroyPlayers()
+    {
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            Destroy(playerList[i]);
+        }
     }
 
     [PunRPC]

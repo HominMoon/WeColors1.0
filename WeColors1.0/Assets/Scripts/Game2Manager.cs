@@ -61,6 +61,8 @@ public class Game2Manager : MonoBehaviourPunCallbacks
     void Start()
     {
         countText.text = " ";
+        PhotonNetwork.IsMessageQueueRunning = true;
+
         StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
     }
@@ -120,7 +122,7 @@ public class Game2Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerRelease();
-            playerList[i].GetComponent<PlayerColor>().SetPlayerTag();
+            playerList[i].GetComponent<BrushTag>().SetPlayerBrushTag();
         }
     }
 
@@ -188,9 +190,19 @@ public class Game2Manager : MonoBehaviourPunCallbacks
             MatchCounter.player2Point++;
         }
 
+        DestroyPlayers();
+
         yield return new WaitForSeconds(3f);
 
         StartCoroutine(WaitLoadLevel());
+    }
+
+    void DestroyPlayers()
+    {
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            Destroy(playerList[i]);
+        }
     }
 
     IEnumerator WaitLoadLevel()

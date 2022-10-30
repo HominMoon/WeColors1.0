@@ -18,13 +18,13 @@ public class FollwerCount : MonoBehaviour
 
     public void CountFollowerColor()
     {
-        for(int i=0; i<Followers.Length ; i++)
+        for (int i = 0; i < Followers.Length; i++)
         {
-            if(Followers[i].GetComponent<MeshRenderer>().material.color == Color.red)
+            if (Followers[i].GetComponent<MeshRenderer>().material.color == Color.red)
             {
                 player1FollowerCount++;
             }
-            else if(Followers[i].GetComponent<MeshRenderer>().material.color == Color.blue)
+            else if (Followers[i].GetComponent<MeshRenderer>().material.color == Color.blue)
             {
                 player2FollowerCount++;
             }

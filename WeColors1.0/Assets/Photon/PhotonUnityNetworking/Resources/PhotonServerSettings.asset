@@ -51,6 +51,12 @@ MonoBehaviour:
   - RPCAddPoint
   - RPCHostLoadLevel
   - RPCUndoColor
+  - RPCSetPlayer1Tag
+  - RPCSetPlayer2Tag
+  - RPCSetFollowerColorBlue
+  - RPCSetFollowerColorRed
+  - RPCSetPlayer1BrushTag
+  - RPCSetPlayer2BrushTag
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

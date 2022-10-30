@@ -11,6 +11,7 @@ TagManager:
   - DontFall
   - Platform
   - BossAttack
+  - Follower
   layers:
   - Default
   - TransparentFX

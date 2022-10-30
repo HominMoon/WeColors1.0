@@ -13,15 +13,4 @@ public class PlayerColor : MonoBehaviourPun
         
     }
 
-    public void SetPlayerTag()
-    {
-        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        {
-            gameObject.tag = "Player1";
-        }
-        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
-        {
-            gameObject.tag = "Player2";
-        }
-    }
 }

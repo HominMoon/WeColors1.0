@@ -36,11 +36,11 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     private void Awake() {
         Time.timeScale = 1f;
-        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     private void Start()
     {   
+
         player1PointText.text = $"{player1Point}";
         player2PointText.text = $"{player2Point}";
 
@@ -102,6 +102,8 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     IEnumerator LoadLevel()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         matchNumber++;
         isInGame = true;
 
@@ -109,8 +111,9 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         Debug.Log("waitTime:" + waitTime);
 
         yield return new WaitForSeconds(waitTime);
+
         HostLoadLevel();
-        StartCoroutine(HostLoadingLevel());
+        //StartCoroutine(HostLoadingLevel());
     }
 
     void HostLoadLevel()
@@ -122,20 +125,20 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel($"Game{matchNumber}"); 
     }
     
-    IEnumerator HostLoadingLevel()
-    {
-        yield return new WaitForSeconds(0.01f);
+    // IEnumerator HostLoadingLevel()
+    // {
+    //     yield return new WaitForSeconds(1f);
 
-        ClientLoadLevel();
-    }
+    //     ClientLoadLevel();
+    // }
     
-    void ClientLoadLevel()
-    {
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
-        {
-           return;
-        }
+    // void ClientLoadLevel()
+    // {
+    //     if(PhotonNetwork.LocalPlayer.IsMasterClient)
+    //     {
+    //        return;
+    //     }
 
-        PhotonNetwork.LoadLevel($"Game{matchNumber}");
-    }
+    //     PhotonNetwork.LoadLevel($"Game{matchNumber}");
+    // }
 }

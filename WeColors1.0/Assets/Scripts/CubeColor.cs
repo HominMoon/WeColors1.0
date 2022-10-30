@@ -8,18 +8,6 @@ public class CubeColor : MonoBehaviourPun
     //요약: 플레이어 오브젝트에서 충돌 판정이 들어올 경우 실행될 메서드,
     // RPC로 상대와 블럭 색깔이 동기화 되도록 한다.
 
-    public static CubeColor Instance
-    {
-        get
-        {
-            if (instance == null) instance = FindObjectOfType<CubeColor>();
-
-            return instance;
-        }
-    }
-
-    private static CubeColor instance;
-
     public void ChangeColor(int playerNum)
     {
         photonView.RPC("RPCChangeColor", RpcTarget.All, playerNum);
