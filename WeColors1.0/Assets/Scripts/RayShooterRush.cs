@@ -10,8 +10,6 @@ public class RayShooterRush : MonoBehaviourPun
 
     public void DoRay()
     {
-        if (!PhotonNetwork.IsMasterClient) { return; }
-
         raycastHits = Physics.RaycastAll(gameObject.transform.position, gameObject.transform.forward, Mathf.Infinity);
 
         foreach (RaycastHit raycastHit in raycastHits)

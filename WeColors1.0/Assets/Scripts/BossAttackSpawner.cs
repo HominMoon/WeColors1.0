@@ -28,7 +28,7 @@ public class BossAttackSpawner : MonoBehaviourPun
         spawnRandomTime = Random.Range(minSpawnRange, maxSpawnRange);
         spwanRandomPosition = Random.Range(0,objectRange - 1);
         yield return new WaitForSeconds(spawnRandomTime);
-        Instantiate(Ball, bossAttackSpawner[spwanRandomPosition].transform.position, transform.rotation);
+        PhotonNetwork.Instantiate(Ball.name, bossAttackSpawner[spwanRandomPosition].transform.position, transform.rotation);
         //PhotonNetwork.Instantiate(Ball.name, transform.position, transform.rotation); // -> 실제 사용
         StartCoroutine(Spawn());
     }

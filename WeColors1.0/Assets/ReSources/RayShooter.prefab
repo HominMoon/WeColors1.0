@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6520516067101538557}
   - component: {fileID: 8213093471703686832}
   - component: {fileID: 365265083420927456}
+  - component: {fileID: 7293127247465831427}
   m_Layer: 0
   m_Name: RayShooter
   m_TagString: Untagged
@@ -67,3 +68,15 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &7293127247465831427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238037743124912423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7369327770e99e64f9aa90c65c79267c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

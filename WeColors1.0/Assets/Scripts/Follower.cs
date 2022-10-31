@@ -44,12 +44,12 @@ public class Follower : MonoBehaviourPun
     [PunRPC]
     void RPCSetFollowerColorRed()
     {
-        gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+        GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     [PunRPC]
     void RPCSetFollowerColorBlue()
     {
-        gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+        GetComponent<MeshRenderer>().material.color = Color.blue;
     }
 }
