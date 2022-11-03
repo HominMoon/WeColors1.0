@@ -29,6 +29,14 @@ public class CameraFollow : MonoBehaviourPun
 
         if(scene.name == "Game2") { return; }
 
+        if(scene.name == "Game4")
+        {
+            cinemachineVirtualCamera.transform.rotation = Quaternion.Euler(30,0,0);
+            transposer.m_FollowOffset = new Vector3(0, 6, -12);
+
+            return;
+        }
+
         if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
             cinemachineVirtualCamera.transform.rotation = Quaternion.Euler(45,180,0);

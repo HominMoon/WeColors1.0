@@ -182,6 +182,8 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         isGameEnd = true;
         countText.text = "Game!";
 
+        GetComponent<LeverDisable>().SetLeverDisable();
+
         yield return new WaitForSeconds(3f);
         StartCoroutine(CountCube());
     }

@@ -10,6 +10,8 @@ public class Follower : MonoBehaviourPun
     [SerializeField] GameObject followingPlayer = null;
     [SerializeField] NavMeshAgent navMeshAgent;
 
+    int followingPlayerNum = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,12 +33,12 @@ public class Follower : MonoBehaviourPun
     {
         if (other.gameObject.tag == "Player1")
         {
-            followingPlayer = other.gameObject.transform.parent.gameObject;
+            followingPlayer = other.gameObject.GetComponentInParent<Transform>().gameObject;
             photonView.RPC("RPCSetFollowerColorRed", RpcTarget.All);
         }
         else if (other.gameObject.tag == "Player2")
         {
-            followingPlayer = other.gameObject.transform.parent.gameObject;
+            followingPlayer = other.gameObject.GetComponentInParent<Transform>().gameObject;
             photonView.RPC("RPCSetFollowerColorBlue", RpcTarget.All);
         }
     }
@@ -44,12 +46,14 @@ public class Follower : MonoBehaviourPun
     [PunRPC]
     void RPCSetFollowerColorRed()
     {
+        followingPlayerNum = 1;
         GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     [PunRPC]
     void RPCSetFollowerColorBlue()
     {
+         followingPlayerNum = 2;
         GetComponent<MeshRenderer>().material.color = Color.blue;
     }
 }

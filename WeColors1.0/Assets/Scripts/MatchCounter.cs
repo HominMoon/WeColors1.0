@@ -40,6 +40,7 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     private void Start()
     {   
+        playerReady.gameObject.SetActive(false);
 
         player1PointText.text = $"{player1Point}";
         player2PointText.text = $"{player2Point}";
@@ -60,6 +61,11 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if(PhotonNetwork.PlayerList.Length == 2 && playerReady.IsActive() == false)
+        {
+            StartCoroutine(SetActivePlayerReadyButton());
+        }
+
         if(!isPlayer1Ready || !isPlayer2Ready)
         {
             infoText.text = "상대를 기다리는 중입니다...";
@@ -70,6 +76,12 @@ public class MatchCounter : MonoBehaviourPunCallbacks
             isInGame = true;
             StartCoroutine(LoadLevel());
         }
+    }
+
+    IEnumerator SetActivePlayerReadyButton()
+    {
+        yield return new WaitForSeconds(3.5f);
+        playerReady.gameObject.SetActive(true);
     }
 
     public void PlayerReady()
@@ -122,7 +134,8 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         {
            return;
         }
-        PhotonNetwork.LoadLevel($"Game{matchNumber}"); 
+        //PhotonNetwork.LoadLevel($"Game{matchNumber}");
+        PhotonNetwork.LoadLevel($"Game3");
     }
     
     // IEnumerator HostLoadingLevel()

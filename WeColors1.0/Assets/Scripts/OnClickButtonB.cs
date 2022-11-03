@@ -32,10 +32,4 @@ public class OnClickButtonB : MonoBehaviourPun
 
         gameObject.GetComponent<Button>().onClick.AddListener(myPlayer.GetComponent<PlayerMovement>().Attack);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

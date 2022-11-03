@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class CubeColorRush : MonoBehaviourPun
 {
-    [SerializeField] float delayTime = 0.1f;
-    [SerializeField] float undoSpeed = 0.5f;
+    [SerializeField] float undoSpeed = 1f;
+    [SerializeField] float popPower = 5f;
+
+    Rigidbody rd;
 
     public void ChangeColor()
     {
@@ -15,13 +17,7 @@ public class CubeColorRush : MonoBehaviourPun
 
     IEnumerator DelayForRush()
     {
-        yield return new WaitForSeconds(delayTime);
         photonView.RPC("RPCChangeColor", RpcTarget.All);
-        StartCoroutine(UndoColor());
-    }
-
-    IEnumerator UndoColor()
-    {
         yield return new WaitForSeconds(undoSpeed);
         photonView.RPC("RPCUndoColor", RpcTarget.All);
     }
@@ -29,12 +25,16 @@ public class CubeColorRush : MonoBehaviourPun
     [PunRPC]
     public void RPCChangeColor()
     {
-        GetComponent<MeshRenderer>().material.color = Color.gray;
+        gameObject.tag = "BossAttack";
+        rd = GetComponent<Rigidbody>();
+        rd.AddForce(Vector3.up * popPower , ForceMode.Impulse);
+        GetComponent<MeshRenderer>().material.color = Color.black;
     }
 
     [PunRPC]
     public void RPCUndoColor()
     {
-        GetComponent<MeshRenderer>().material.color = Color.white;
+        gameObject.tag = "Untagged";
+        GetComponent<MeshRenderer>().material.color = new Color(229/255f,229/255f,229/255f);
     }
 }

@@ -11,7 +11,7 @@ public class BossAttackSpawner : MonoBehaviourPun
     [SerializeField] float minSpawnRange = 2f;
     [SerializeField] float maxSpawnRange = 3f;
 
-    int objectRange = 15;
+    int objectRange;
 
     int spwanRandomPosition;
     float spawnRandomTime;
@@ -19,8 +19,9 @@ public class BossAttackSpawner : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        //if (!PhotonNetwork.IsMasterClient) { return; }
+        if (!PhotonNetwork.IsMasterClient) { return; }
         StartCoroutine(Spawn());
+        objectRange = bossAttackSpawner.Length;
     }
 
     IEnumerator Spawn()

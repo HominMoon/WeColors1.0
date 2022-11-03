@@ -7706,6 +7706,21 @@ MonoBehaviour:
   numberofItemSpawn: 8
   playerList: []
   winner: {fileID: 0}
+--- !u!114 &356606090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356606084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e2eea0091078747a1d89cd9988d941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lever: {fileID: 4469566931545684668}
+  ButtonA: {fileID: 4469566931545684667}
+  ButtonB: {fileID: 4469566931545684666}
 --- !u!43 &371474172
 Mesh:
   m_ObjectHideFlags: 0
@@ -45304,6 +45319,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+--- !u!1 &4469566931545684666 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8683636149280656305, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 4469566931545684665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4469566931545684667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2783513347703336563, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 4469566931545684665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4469566931545684668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4469566932115875277, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 4469566931545684665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4921622403599129205
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class FollowerMaker : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) { return; }
         StartCoroutine(InstantiateFollower());
     }
 

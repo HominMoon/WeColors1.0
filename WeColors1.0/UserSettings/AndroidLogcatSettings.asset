@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30PDZ8M",
         "name": "com.deltatime.wecolors",
-        "processId": 5945,
+        "processId": 26162,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -17,31 +17,61 @@
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 26957,
+            "processId": 9662,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 28312,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.vanced.android.youtube",
-            "processId": 28900,
+            "processId": 13654,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 2445,
+            "processId": 5741,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 5945,
+            "processId": 6930,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.android.chrome",
+            "processId": 32286,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 14398,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 20846,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 23934,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 25340,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 26162,
             "exited": false
         }
     ],

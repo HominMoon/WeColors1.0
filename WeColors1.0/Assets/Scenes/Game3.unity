@@ -266,6 +266,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &168277488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8683636149280656305, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 168277485}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &168277489 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2783513347703336563, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 168277485}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &168277490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4469566932115875277, guid: 72aff108a2237cf4a8f511c6105ca857, type: 3}
+  m_PrefabInstance: {fileID: 168277485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &851209152
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +642,21 @@ MonoBehaviour:
   Followers: []
   player1FollowerCount: 0
   player2FollowerCount: 0
+--- !u!114 &1391617241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391617235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e2eea0091078747a1d89cd9988d941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lever: {fileID: 168277490}
+  ButtonA: {fileID: 168277489}
+  ButtonB: {fileID: 168277488}
 --- !u!4 &1456901822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4921622404921808075, guid: 80c3a53627377164b8e7a86bceadc47c, type: 3}

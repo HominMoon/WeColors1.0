@@ -55,10 +55,13 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject[] playerList;
 
     int playerInstantiateCount = 0;
+    int player1Health;
+    int player2Health;
 
     float timer = 0;
 
     bool isGameEnd = false;
+    bool isPlayerHealthZero = false;
 
     #endregion
 
@@ -69,6 +72,11 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
+    }
+
+    void Update()
+    {
+        //
     }
 
     IEnumerator WaitAndSpawn()
@@ -159,7 +167,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     {
         StartCoroutine(ItemManager());
 
-        yield return new WaitUntil(() => gameTimer + countTimer == 0); //60초간 게임 진행
+        yield return new WaitUntil(() => isPlayerHealthZero == true); //60초간 게임 진행
 
         timeText.gameObject.SetActive(false);
         StartCoroutine(GameStop());
@@ -181,6 +189,8 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         isGameEnd = true;
         countText.text = "Game!";
+
+        GetComponent<LeverDisable>().SetLeverDisable();
 
         yield return new WaitForSeconds(3f);
         StartCoroutine(CountCube());

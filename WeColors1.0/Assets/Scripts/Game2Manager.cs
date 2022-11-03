@@ -163,6 +163,8 @@ public class Game2Manager : MonoBehaviourPunCallbacks
         isGameEnd = true;
         countText.text = "Game!";
 
+        GetComponent<LeverDisable>().SetLeverDisable();
+
         yield return new WaitForSeconds(3f);
         StartCoroutine(WinnerAnnounce());
     }

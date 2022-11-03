@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -7,16 +8,28 @@ public class RayShooterRush : MonoBehaviourPun
 {
     [SerializeField] RaycastHit[] raycastHits;
 
+    [SerializeField] float delayTime = 0.2f;
+
+    private IEnumerator delayCoroutine;
 
     public void DoRay()
     {
         raycastHits = Physics.RaycastAll(gameObject.transform.position, gameObject.transform.forward, Mathf.Infinity);
 
-        foreach (RaycastHit raycastHit in raycastHits)
+        Array.Sort(raycastHits,(RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
+
+        delayCoroutine = DelayRayCastRush();
+        StartCoroutine(delayCoroutine);
+    }
+
+    IEnumerator DelayRayCastRush()
+    {
+        for(int i=0;i < raycastHits.Length ; i++)
         {
-            raycastHit.collider.gameObject.GetComponent<CubeColorRush>().ChangeColor();
+            yield return new WaitForSeconds(delayTime);
+            raycastHits[i].collider.gameObject.GetComponent<CubeColorRush>().ChangeColor();
         }
 
-        Destroy(this.gameObject);
+        StopCoroutine(delayCoroutine);
     }
 }

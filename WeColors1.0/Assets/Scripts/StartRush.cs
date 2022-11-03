@@ -9,12 +9,12 @@ public class StartRush : MonoBehaviourPun
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag != "BossAttack")
+        if(other.gameObject.tag != "BossAttack" || !PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
-        GameObject shooter = Instantiate(rayShooter, gameObject.transform.position, gameObject.transform.rotation);
+        GameObject shooter = PhotonNetwork.Instantiate(rayShooter.name, gameObject.transform.position, gameObject.transform.rotation);
 
         shooter.GetComponent<RayShooterRush>().DoRay();
     }
