@@ -27,8 +27,6 @@ public class PlayerMovement : MonoBehaviourPun
     public bool isMove = false;
     bool isOnPlatform = false;
 
-    public int playerHealth = 3;
-
     [SerializeField] GameObject painter;
 
     // Start is called before the first frame update
@@ -133,13 +131,6 @@ public class PlayerMovement : MonoBehaviourPun
         m_Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-    void OnCollisionEnter(Collision other) 
-    {
-        if(other.gameObject.tag == "BossAttack" && photonView.IsMine)
-        {
-            playerHealth--;
-        }
-    }
 
     void OnCollisionStay(Collision other)
     {

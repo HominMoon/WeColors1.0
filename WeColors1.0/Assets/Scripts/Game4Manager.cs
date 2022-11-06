@@ -55,13 +55,16 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject[] playerList;
 
     int playerInstantiateCount = 0;
-    int player1Health;
-    int player2Health;
+    [SerializeField] int player1Health = 3;
+    [SerializeField] int player2Health = 3;
+    public bool isPlayer1Damaged;
+    public bool isPlayer2Damaged;
+
 
     float timer = 0;
+    int winnerPlayerNum;
 
     bool isGameEnd = false;
-    bool isPlayerHealthZero = false;
 
     #endregion
 
@@ -76,8 +79,26 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        //
+        if(player1Health <= 0 || player2Health <= 0) { return; }
+
+        if(player2Health <= 0)
+        { 
+            winnerPlayerNum = 1;
+            isGameEnd = true;
+        }
+        else if(player1Health <= 0)
+        { 
+            winnerPlayerNum = 2;
+            isGameEnd = true;
+        }
     }
+
+    //플레이어 체력에 대해
+    //플레이어 체력을 플레이어에서 관리하지 말고 게임4매니저에서 관리하자(어차피 게임4 밖에 안씀)
+    //그렇다면 플레이어가 닿았을 때 1초동안은 닿아도 다시 체력이 깎이지 않도록 하는 변수만 플레이어에서 관리한다.
+    //플레이어 체력이 각각 동기화 되도록 rpc를 사용한다.
+    //검은 큐브에 오브젝트 닿음 -> 큐브에 닿은 오브젝트 태그가 player 이고 -> 
+    //photonview가 내것일 때, game4manager에서 내 player의 체력을 -1(rpc로)
 
     IEnumerator WaitAndSpawn()
     {
@@ -167,7 +188,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     {
         StartCoroutine(ItemManager());
 
-        yield return new WaitUntil(() => isPlayerHealthZero == true); //60초간 게임 진행
+        yield return new WaitUntil(() => isGameEnd == true); //60초간 게임 진행
 
         timeText.gameObject.SetActive(false);
         StartCoroutine(GameStop());
@@ -187,13 +208,12 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
         GamePlayerStop();
 
-        isGameEnd = true;
         countText.text = "Game!";
 
         GetComponent<LeverDisable>().SetLeverDisable();
 
         yield return new WaitForSeconds(3f);
-        StartCoroutine(CountCube());
+        StartCoroutine(WinnerAnnounce());
     }
 
     private void GamePlayerStop()
@@ -206,7 +226,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator CountCube()
+    IEnumerator WinnerAnnounce()
     {
         AddPoint();
 
@@ -234,26 +254,14 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPCAddPoint()
     {
-        CubeCounter cubeCounter = GetComponent<CubeCounter>();
-        cubeCounter.CountCubeColor();
-
-        infoText.text = $"{cubeCounter.player1CubeCount} : {cubeCounter.player2CubeCount}";
-
-        if (cubeCounter.player1CubeCount > cubeCounter.player2CubeCount)
+        if(winnerPlayerNum == 1)
         {
             countText.text = "Player1 Win!";
-            // rpc로 수행
             MatchCounter.player1Point++;
         }
-        else if (cubeCounter.player1CubeCount < cubeCounter.player2CubeCount)
+        else if(winnerPlayerNum == 2)
         {
             countText.text = "Player2 Win!";
-            MatchCounter.player2Point++;
-        }
-        else if (cubeCounter.player1CubeCount == cubeCounter.player2CubeCount)
-        {
-            countText.text = "Draw";
-            MatchCounter.player1Point++;
             MatchCounter.player2Point++;
         }
     }
@@ -279,6 +287,30 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
 
+    }
+
+    public void PlayerHealth()
+    {
+        if(PhotonNetwork.LocalPlayer.ActorNumber == 1 && isPlayer1Damaged == false)
+        {
+            photonView.RPC("RPCPlayer1HealthDecrease", RpcTarget.All);
+        }
+        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2 && isPlayer2Damaged == false)
+        { 
+            photonView.RPC("RPCPlayer2HealthDecrease", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void RPCPlayer1HealthDecrease()
+    {
+        player1Health--;
+    }
+
+    [PunRPC]
+    void RPCPlayer2HealthDecrease()
+    {
+        player2Health--;
     }
 
     //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록
