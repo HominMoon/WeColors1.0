@@ -20,6 +20,7 @@ public class RayShooterRush : MonoBehaviourPun
 
         delayCoroutine = DelayRayCastRush();
         StartCoroutine(delayCoroutine);
+        StartCoroutine(DestroyThis());
     }
 
     IEnumerator DelayRayCastRush()
@@ -31,5 +32,11 @@ public class RayShooterRush : MonoBehaviourPun
         }
 
         StopCoroutine(delayCoroutine);
+    }
+
+    IEnumerator DestroyThis()
+    {
+        yield return new WaitForSeconds(10f);
+        Destroy(gameObject);
     }
 }

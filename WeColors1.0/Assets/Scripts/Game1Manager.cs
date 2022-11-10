@@ -206,7 +206,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
         DestroyPlayers();
 
-        StartCoroutine(WaitRPCLoadLevel());
+        StartCoroutine(WaitLoadLevel());
     }
 
     void AddPoint()
@@ -250,7 +250,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator WaitRPCLoadLevel()
+    IEnumerator WaitLoadLevel()
     {
         yield return new WaitForSeconds(2f);
 
@@ -259,6 +259,10 @@ public class Game1Manager : MonoBehaviourPunCallbacks
 
     void HostLoadLevel()
     {
+        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+           return;
+        }
         PhotonNetwork.LoadLevel("MatchCounter");
     }
 

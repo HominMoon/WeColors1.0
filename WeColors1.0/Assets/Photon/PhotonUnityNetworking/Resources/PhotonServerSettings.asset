@@ -59,6 +59,7 @@ MonoBehaviour:
   - RPCSetPlayer2BrushTag
   - RPCPlayer1HealthDecrease
   - RPCPlayer2HealthDecrease
+  - RPCPlayerPoint
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

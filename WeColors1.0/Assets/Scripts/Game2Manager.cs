@@ -210,6 +210,16 @@ public class Game2Manager : MonoBehaviourPunCallbacks
     IEnumerator WaitLoadLevel()
     {
         yield return new WaitForSeconds(2f);
+        
+        HostLoadLevel();
+    }
+
+    void HostLoadLevel()
+    {
+        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+           return;
+        }
         PhotonNetwork.LoadLevel("MatchCounter");
     }
 

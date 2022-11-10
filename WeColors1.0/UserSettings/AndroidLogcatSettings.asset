@@ -3,10 +3,10 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30PDZ8M",
         "name": "com.deltatime.wecolors",
-        "processId": 7678,
+        "processId": 12550,
         "exited": false
     },
-    "m_SelectedPriority": 0,
+    "m_SelectedPriority": 1,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R3CR30PDZ8M",
@@ -16,38 +16,50 @@
         },
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.kakao.talk",
-            "processId": 15877,
+            "name": "com.deltatime.wecolors",
+            "processId": 28369,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 30364,
+            "processId": 32548,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 31663,
+            "processId": 3686,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 5176,
+            "processId": 5986,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.kakao.talk",
-            "processId": 1192,
+            "name": "com.deltatime.wecolors",
+            "processId": 7997,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 7678,
+            "processId": 9057,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 10427,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 12550,
             "exited": false
         }
     ],
@@ -79,7 +91,7 @@
             },
             {
                 "m_Name": "CRASH",
-                "m_Selected": false
+                "m_Selected": true
             }
         ]
     },
@@ -104,7 +116,7 @@
     "m_FilterOptions": {
         "m_Filter": "",
         "m_UseRegularExpressions": false,
-        "m_MatchCase": false
+        "m_MatchCase": true
     },
     "m_SymbolPaths": [],
     "m_CaptureVideoSettings": {

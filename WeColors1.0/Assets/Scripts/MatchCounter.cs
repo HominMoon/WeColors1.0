@@ -34,39 +34,90 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     public static int player1Point = 0;
     public static int player2Point = 0;
 
-    private void Awake() {
+    private void Awake()
+    {
         Time.timeScale = 1f;
     }
 
     private void Start()
-    {   
+    {
         playerReady.gameObject.SetActive(false);
 
         player1PointText.text = $"{player1Point}";
         player2PointText.text = $"{player2Point}";
 
-        if(player1Point == 3 || player2Point == 3)
+        if (player1Point == 3 || player2Point == 3)
         {
             isInGame = false;
             infoText.text = "게임이 끝났습니다!";
+
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient) { return; }
+            PlayerPoint();
         }
 
-        if(isInGame)
+        if (isInGame)
         {
             infoText.text = "다음 게임이 시작됩니다!";
             StartCoroutine(LoadLevel());
         }
-        
+
+    }
+
+    void PlayerPoint()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            photonView.RPC("RPCPlayerPoint", RpcTarget.All);
+        }
+
+
+    }
+
+    [PunRPC]
+    void RPCPlayerPoint()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            if (player1Point == 3 && player2Point < 3)
+            {
+                
+            }
+            else if (player1Point < 3 && player2Point == 3)
+            {
+
+            }
+            else if (player1Point == 3 && player2Point == 3)
+            {
+
+            }
+        }
+        else
+        {
+            if (player1Point == 3 && player2Point < 3)
+            {
+
+            }
+            else if (player1Point < 3 && player2Point == 3)
+            {
+
+            }
+            else if (player1Point == 3 && player2Point == 3)
+            {
+
+            }
+        }
+
+
     }
 
     private void Update()
     {
-        if(PhotonNetwork.PlayerList.Length == 2 && playerReady.IsActive() == false)
+        if (PhotonNetwork.PlayerList.Length == 2 && playerReady.IsActive() == false)
         {
             StartCoroutine(SetActivePlayerReadyButton());
         }
 
-        if(!isPlayer1Ready || !isPlayer2Ready)
+        if (!isPlayer1Ready || !isPlayer2Ready)
         {
             infoText.text = "상대를 기다리는 중입니다...";
         }
@@ -116,7 +167,15 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        matchNumber++;
+        if (matchNumber == 4)
+        {
+            matchNumber = Random.Range(1, 4);
+        }
+        else
+        {
+            matchNumber++;
+        }
+
         isInGame = true;
 
         Debug.Log("매치넘버" + matchNumber);
@@ -130,21 +189,21 @@ public class MatchCounter : MonoBehaviourPunCallbacks
 
     void HostLoadLevel()
     {
-        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-           return;
+            return;
         }
-        //PhotonNetwork.LoadLevel($"Game{matchNumber}");
-        PhotonNetwork.LoadLevel($"Game4");
+        PhotonNetwork.LoadLevel($"Game{matchNumber}");
+        //PhotonNetwork.LoadLevel($"Game4");
     }
-    
+
     // IEnumerator HostLoadingLevel()
     // {
     //     yield return new WaitForSeconds(1f);
 
     //     ClientLoadLevel();
     // }
-    
+
     // void ClientLoadLevel()
     // {
     //     if(PhotonNetwork.LocalPlayer.IsMasterClient)

@@ -57,14 +57,14 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     int playerInstantiateCount = 0;
     [SerializeField] int player1Health = 3;
     [SerializeField] int player2Health = 3;
-    public bool isPlayer1Damaged;
-    public bool isPlayer2Damaged;
+    public bool isPlayer1Damaged = false;
+    public bool isPlayer2Damaged = false;
 
 
     float timer = 0;
     int winnerPlayerNum;
 
-    bool isGameEnd = false;
+    [SerializeField] bool isGameEnd = false;
 
     #endregion
 
@@ -75,22 +75,6 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         StartCoroutine(WaitAndSpawn());
         StartCoroutine(WaitPlayer());
-    }
-
-    void Update()
-    {
-        if(player1Health <= 0 || player2Health <= 0) { return; }
-
-        if(player2Health <= 0)
-        { 
-            winnerPlayerNum = 1;
-            isGameEnd = true;
-        }
-        else if(player1Health <= 0)
-        { 
-            winnerPlayerNum = 2;
-            isGameEnd = true;
-        }
     }
 
     //플레이어 체력에 대해
@@ -172,10 +156,9 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         {
             countText.text = "START!";
         }
-        else if (countTimer < 0 || countTimer + gameTimer > 0)
+        else if (!isGameEnd)
         {
             countText.text = " ";
-            timeText.text = $"{gameTimer + countTimer}";
         }
 
         yield return new WaitForSeconds(1f);
@@ -188,9 +171,8 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     {
         StartCoroutine(ItemManager());
 
-        yield return new WaitUntil(() => isGameEnd == true); //60초간 게임 진행
+        yield return new WaitUntil(() => isGameEnd); //60초간 게임 진행
 
-        timeText.gameObject.SetActive(false);
         StartCoroutine(GameStop());
 
     }
@@ -234,7 +216,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         DestroyPlayers();
 
-        StartCoroutine(WaitRPCLoadLevel());
+        StartCoroutine(WaitLoadLevel());
     }
 
     void AddPoint()
@@ -266,7 +248,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator WaitRPCLoadLevel()
+    IEnumerator WaitLoadLevel()
     {
         yield return new WaitForSeconds(2f);
 
@@ -275,6 +257,10 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
     void HostLoadLevel()
     {
+        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+           return;
+        }
         PhotonNetwork.LoadLevel("MatchCounter");
     }
 
@@ -285,12 +271,14 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsMasterClient) { return; }
 
-        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
+        //PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
 
     }
 
     public void PlayerHealth()
     {
+        if(isGameEnd) { return; }
+
         if(PhotonNetwork.LocalPlayer.ActorNumber == 1 && isPlayer1Damaged == false)
         {
             photonView.RPC("RPCPlayer1HealthDecrease", RpcTarget.All);
@@ -305,12 +293,24 @@ public class Game4Manager : MonoBehaviourPunCallbacks
     void RPCPlayer1HealthDecrease()
     {
         player1Health--;
+
+        if(player1Health == 0)
+        {
+            winnerPlayerNum = 1;
+            isGameEnd = true;
+        }
     }
 
     [PunRPC]
     void RPCPlayer2HealthDecrease()
     {
         player2Health--;
+
+        if(player2Health == 0)
+        {
+            winnerPlayerNum = 2;
+            isGameEnd = true;
+        }
     }
 
     //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록

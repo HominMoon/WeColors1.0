@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
+using GooglePlayGames;
 
 public class AuthManager : MonoBehaviour
 {
@@ -80,7 +81,8 @@ public class AuthManager : MonoBehaviour
             }
 
             firebaseUser = task.Result;
+
+            DatabaseManager.instance.FirstSaveData(firebaseUser);
         });
     }
-
 }
