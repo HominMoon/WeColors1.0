@@ -10,7 +10,24 @@ public class PlayerColor : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.red;
+            if(!photonView.IsMine)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.blue;
+            }
+        }
+        else if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
+            if(!photonView.IsMine)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+        }
+
+
     }
 
 }

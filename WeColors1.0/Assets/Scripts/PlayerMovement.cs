@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     int playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
 
-    [SerializeField] float speed = 5f;
+    public float speed = 5f;
     [SerializeField] float jumpPower = 5f;
     GameObject joyStick;
     Vector2 playerDirection;

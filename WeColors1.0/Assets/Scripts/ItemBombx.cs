@@ -15,9 +15,8 @@ public class ItemBombx : MonoBehaviourPun
         {
             return;
         }
-
-        GameObject shooter = Instantiate(rayShooter,new Vector3(gameObject.transform.position.x, 0 , -1), Quaternion.Euler(0,0,0));
-
+        GameObject shooter = Instantiate(rayShooter,new Vector3(-1, 0 , gameObject.transform.position.z),
+         Quaternion.Euler(0,90,0));
         shooter.GetComponent<RayShooter>().DoRay();
     }
 }

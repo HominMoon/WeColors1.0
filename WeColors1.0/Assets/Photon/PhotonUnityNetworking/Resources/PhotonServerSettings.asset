@@ -60,6 +60,8 @@ MonoBehaviour:
   - RPCPlayer1HealthDecrease
   - RPCPlayer2HealthDecrease
   - RPCPlayerPoint
+  - RPCColorBlue
+  - RPCColorRed
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

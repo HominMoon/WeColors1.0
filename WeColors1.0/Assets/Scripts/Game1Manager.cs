@@ -37,7 +37,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     #region variable
 
     [SerializeField] GameObject playerPrefab;
-    [SerializeField] GameObject itemPrefab;
+    [SerializeField] GameObject[] itemPrefab;
     [SerializeField] Transform[] spawnPositions;
 
     [SerializeField] TMP_Text scoreText;
@@ -49,7 +49,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
     [SerializeField] int countTimer = 3;
 
     [SerializeField] int numberofItemSpawn = 8;
-    [SerializeField] float itemSpawnPeriod = 5f;
+    [SerializeField] float itemSpawnPeriod = 4f;
 
     int[] playerScore = new int[PhotonNetwork.PlayerList.Length];
     [SerializeField] GameObject[] playerList;
@@ -173,6 +173,20 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         StartCoroutine(ItemManager());
     }
 
+    public void SpawnItem()
+    {
+        int xVal = Random.Range(0, 15);
+        int zVal = Random.Range(0, 15);
+
+        if (!PhotonNetwork.IsMasterClient) { return; }
+
+        // 아이템 종류 여러개 생성, 주기도 조금 줄이기
+        // bombx bomby speedup 3가지
+        // item배열을 만들고, 랜덤으로 돌려서 생성 (i값)
+        int i = Random.Range(0,2);
+        PhotonNetwork.Instantiate(itemPrefab[i].name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
+    }
+
     IEnumerator GameStop()
     {
         //게임 시간을 멈추지 말고 플레이어만 멈추자
@@ -195,6 +209,7 @@ public class Game1Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerStop();
+            playerList[i].GetComponent<PlayerMovement>().speed = 0f;
         }
     }
 
@@ -264,18 +279,6 @@ public class Game1Manager : MonoBehaviourPunCallbacks
            return;
         }
         PhotonNetwork.LoadLevel("MatchCounter");
-    }
-
-
-    public void SpawnItem()
-    {
-        int xVal = Random.Range(0, 15);
-        int zVal = Random.Range(0, 15);
-
-        if (!PhotonNetwork.IsMasterClient) { return; }
-
-        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(xVal, 1, zVal), Quaternion.identity); // y = 1 for floating
-
     }
 
     //뒤로가기 또는 버튼 눌렸을 때 창 띄워서 물은 후 실행하도록

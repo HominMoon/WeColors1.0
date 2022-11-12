@@ -182,6 +182,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerStop();
+            playerList[i].GetComponent<PlayerMovement>().speed = 0f;
         }
     }
 

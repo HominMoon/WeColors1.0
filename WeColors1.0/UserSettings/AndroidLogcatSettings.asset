@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30PDZ8M",
         "name": "com.deltatime.wecolors",
-        "processId": 12550,
+        "processId": 25184,
         "exited": false
     },
     "m_SelectedPriority": 1,
@@ -17,49 +17,103 @@
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 28369,
+            "processId": 27222,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 32548,
+            "processId": 28220,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 3686,
+            "processId": 30313,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 5986,
+            "processId": 30986,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 7997,
+            "processId": 32300,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 9057,
+            "processId": 1974,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 10427,
+            "processId": 4689,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 12550,
+            "processId": 6598,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 11227,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 12210,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 12889,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 14291,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 15770,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 18510,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 19235,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 30632,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 25184,
             "exited": false
         }
     ],
@@ -91,7 +145,7 @@
             },
             {
                 "m_Name": "CRASH",
-                "m_Selected": true
+                "m_Selected": false
             }
         ]
     },

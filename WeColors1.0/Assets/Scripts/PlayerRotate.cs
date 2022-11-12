@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class PlayerRotate : MonoBehaviourPun
 {
@@ -10,11 +11,14 @@ public class PlayerRotate : MonoBehaviourPun
     //해결 필요: 조이스틱 direction이 0이되면 캐릭터가 정면만 본다.
 
     JoyStick joyStick;
+    Scene scene;
 
     // Start is called before the first frame update
     void Start()
     {
         joyStick = GameObject.Find("JoyStick").GetComponent<JoyStick>();
+
+        scene = SceneManager.GetActiveScene();
     }
 
     // Update is called once per frame
@@ -34,7 +38,15 @@ public class PlayerRotate : MonoBehaviourPun
             zInput = -zInput;
         }
 
-
         transform.forward = new Vector3(xInput, 0, zInput).normalized;
+        
+        if(scene.name == "Game2" && PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            transform.forward = new Vector3(xInput, 0, zInput).normalized;
+        }
+        else if(scene.name == "Game2" && PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            transform.forward = new Vector3(-xInput, 0, -zInput).normalized;
+        }
     }
 }

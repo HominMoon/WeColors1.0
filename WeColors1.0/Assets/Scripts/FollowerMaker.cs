@@ -26,7 +26,7 @@ public class FollowerMaker : MonoBehaviourPun
     {
         delayTime = Random.Range(minDelay,maxDelay);
         PhotonNetwork.Instantiate(follower.name, 
-            new Vector3(Random.Range(minRange, maxRange), 2 ,Random.Range(minRange, maxRange)),
+            new Vector3(Random.Range(minRange, maxRange), 5 ,Random.Range(minRange, maxRange)),
             Quaternion.Euler(0,Random.Range(0,360),0));
 
         yield return new WaitForSeconds(delayTime);

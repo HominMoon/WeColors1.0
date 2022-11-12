@@ -5,6 +5,7 @@ using Photon;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MatchCounter : MonoBehaviourPunCallbacks
 {
@@ -80,34 +81,42 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         {
             if (player1Point == 3 && player2Point < 3)
             {
-                
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 5);
             }
             else if (player1Point < 3 && player2Point == 3)
             {
-
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, -5);
             }
             else if (player1Point == 3 && player2Point == 3)
             {
-
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 0);
             }
         }
         else
         {
             if (player1Point == 3 && player2Point < 3)
             {
-
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, -5);
             }
             else if (player1Point < 3 && player2Point == 3)
             {
-
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, +5);
             }
             else if (player1Point == 3 && player2Point == 3)
             {
-
+                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 0);
             }
         }
 
+        StartCoroutine(LoadLobby());
 
+
+    }
+
+    IEnumerator LoadLobby()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("MainLobby");
     }
 
     private void Update()

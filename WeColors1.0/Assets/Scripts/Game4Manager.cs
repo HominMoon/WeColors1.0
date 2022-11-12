@@ -205,6 +205,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].GetComponent<PlayerMovement>().PlayerStop();
+            playerList[i].GetComponent<PlayerMovement>().speed = 0f;
         }
     }
 
@@ -296,7 +297,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         if(player1Health == 0)
         {
-            winnerPlayerNum = 1;
+            winnerPlayerNum = 2;
             isGameEnd = true;
         }
     }
@@ -308,7 +309,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
 
         if(player2Health == 0)
         {
-            winnerPlayerNum = 2;
+            winnerPlayerNum = 1;
             isGameEnd = true;
         }
     }

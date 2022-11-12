@@ -6,6 +6,7 @@ using UnityEngine;
 public class RespawnArea : MonoBehaviour
 {
     [SerializeField] GameObject dontFall;
+    ParticleSystem playerParticle;
 
     private void OnTriggerEnter(Collider other)
     {
