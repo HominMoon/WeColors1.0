@@ -140,7 +140,7 @@ public class Game3Manager : MonoBehaviourPunCallbacks
         {
             countText.text = "START!";
         }
-        else if (countTimer < 0 || countTimer + gameTimer > 0)
+        else if (!isGameEnd)
         {
             countText.text = " ";
             timeText.text = $"{gameTimer + countTimer}";

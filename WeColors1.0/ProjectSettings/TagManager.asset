@@ -12,6 +12,8 @@ TagManager:
   - Platform
   - BossAttack
   - Follower
+  - SpeedUp
+  - Item
   layers:
   - Default
   - TransparentFX

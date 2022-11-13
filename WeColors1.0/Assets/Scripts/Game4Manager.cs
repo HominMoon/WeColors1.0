@@ -190,6 +190,7 @@ public class Game4Manager : MonoBehaviourPunCallbacks
         //playerMovement에서 플레이어 정지(또는 비활성화) 메서드 호출
         GamePlayerStop();
 
+        isGameEnd = true;
         countText.text = "Game!";
 
         GetComponent<LeverDisable>().SetLeverDisable();

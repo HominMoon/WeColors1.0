@@ -183,14 +183,14 @@ public class PlayerMovement : MonoBehaviourPun
 
     public void PlayerDash()
     {
-        speed *= 2f;
+        speed += 1f;
         StartCoroutine(DashEnd());
     }
 
     IEnumerator DashEnd()
     {
         yield return new WaitForSeconds(5f);
-        speed /= 2f;
+        speed -= 1f;
     }
 
 }

@@ -3,117 +3,57 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30PDZ8M",
         "name": "com.deltatime.wecolors",
-        "processId": 25184,
+        "processId": 5614,
         "exited": false
     },
     "m_SelectedPriority": 1,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 18665,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
+            "name": "com.deltatime.wecolors",
+            "processId": 22511,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30PDZ8M",
             "name": "com.sec.android.app.launcher",
-            "processId": 2489,
+            "processId": 2633,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 27222,
+            "processId": 25707,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 28220,
+            "processId": 28822,
             "exited": true
         },
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 30313,
-            "exited": true
+            "name": "com.vanced.android.youtube",
+            "processId": 29520,
+            "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 30986,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 32300,
+            "name": "com.kakao.talk",
+            "processId": 25094,
             "exited": false
         },
         {
             "deviceId": "R3CR30PDZ8M",
             "name": "com.deltatime.wecolors",
-            "processId": 1974,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 4689,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 6598,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 11227,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 12210,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 12889,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 14291,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 15770,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 18510,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 19235,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 30632,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30PDZ8M",
-            "name": "com.deltatime.wecolors",
-            "processId": 25184,
+            "processId": 5614,
             "exited": false
         }
     ],
