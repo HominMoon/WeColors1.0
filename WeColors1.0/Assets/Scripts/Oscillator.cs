@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Oscillator : MonoBehaviour
+public class Oscillator : MonoBehaviourPun
 {
     Vector3 startingPosition;
     [SerializeField] Vector3 movementVector;
@@ -28,6 +29,9 @@ public class Oscillator : MonoBehaviour
         movementFactor = (rawSinWave + 1f) / 2f; // 0 ~ 1
 
         Vector3 offset = movementVector * movementFactor;
+
+        //if(!PhotonNetwork.IsMasterClient) { return; }
+
         transform.position = startingPosition + offset;
     }
 }

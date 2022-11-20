@@ -12,6 +12,24 @@ public class GoogleManager : MonoBehaviour
     [SerializeField] TMP_Text text;
     public static string authCode;
 
+    public static GoogleManager instance = null;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +70,7 @@ public class GoogleManager : MonoBehaviour
         ((PlayGamesPlatform)Social.Active).SignOut();
     }
 
-    void Wait()
+    public void Wait()
     {
         Debug.Log("지연 중...");
     }

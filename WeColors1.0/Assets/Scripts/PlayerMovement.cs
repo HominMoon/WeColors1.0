@@ -29,10 +29,16 @@ public class PlayerMovement : MonoBehaviourPun
 
     [SerializeField] GameObject painter;
 
+    [SerializeField] AudioClip jumpSFX;
+    [SerializeField] AudioClip cubeCangeColorSFX;
+
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         rd = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         joyStick = GameObject.Find("JoyStick");
     }
 
@@ -84,6 +90,8 @@ public class PlayerMovement : MonoBehaviourPun
             return;
         }
 
+        audioSource.PlayOneShot(jumpSFX);
+
         isJump = true;
         gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower, ForceMode.Impulse); 
     }
@@ -131,8 +139,7 @@ public class PlayerMovement : MonoBehaviourPun
         m_Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-
-    void OnCollisionStay(Collision other)
+    void OnCollisionEnter(Collision other) 
     {
         if (!photonView.IsMine)
         {
@@ -146,6 +153,16 @@ public class PlayerMovement : MonoBehaviourPun
         if(other.gameObject.tag == "Cube")
         {
             collidedGameObject.GetComponent<CubeColor>().ChangeColor(playerNum);
+            audioSource.PlayOneShot(cubeCangeColorSFX);
+        }
+    }
+
+
+    void OnCollisionStay(Collision other)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
         }
 
         if(other.gameObject.tag == "Platform")

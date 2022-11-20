@@ -5,6 +5,7 @@ using Firebase.Database;
 using Firebase.Auth;
 using GooglePlayGames;
 using UnityEngine.SocialPlatforms;
+using Firebase.Extensions;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -12,23 +13,20 @@ public class DatabaseManager : MonoBehaviour
 
     public class PlayerData
     {
-        public string nickname;
         public int point;
 
-        public PlayerData(string nickname, int point)
+        public PlayerData(int point)
         {
-            this.nickname = nickname;
             this.point = point;
         }
     }
 
     public DatabaseReference databaseReference;
 
-    public static PlayerData currentPlayerData;
+    public PlayerData currentPlayerData;
 
-    public static FirebaseUser fu;
+    public string userId;
 
-    // Start is called before the first frame update
     void Awake()
     {
         if (instance == null)
@@ -45,18 +43,14 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    void start()
-    {
-    }
-
-    public void LoadData(FirebaseUser firebaseUser)
+    public void LoadData(string UserId)
     {
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
-        fu = firebaseUser;
-
-        databaseReference.Child(firebaseUser.UserId).GetValueAsync().ContinueWith(task =>
+        databaseReference.Child(UserId).GetValueAsync().ContinueWithOnMainThread(task =>
         {
+            userId = UserId;
+
             if (task.IsCanceled)
             {
                 Debug.LogError("canceled");
@@ -64,18 +58,22 @@ public class DatabaseManager : MonoBehaviour
             else if (task.IsFaulted)
             {
                 Debug.LogError("faulted");
-                FirstSaveData(firebaseUser);
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("OK");
+                Debug.Log("OKLoad");
                 DataSnapshot snapshot = task.Result;
 
-                IDictionary player = (IDictionary)snapshot.Children;
+                if(!snapshot.Exists)
+                {
+                    FirstSaveData(UserId);
+                }
 
-                currentPlayerData = new PlayerData((string)player["nickname"], (int)player["point"]);
-
-                Debug.Log(currentPlayerData.nickname + " " + currentPlayerData.point);
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    IDictionary playerInfo = (IDictionary)data.Value;
+                    currentPlayerData = new PlayerData((int)playerInfo["point"]);
+                }
             }
         });
 
@@ -87,24 +85,22 @@ public class DatabaseManager : MonoBehaviour
         //PlayerData playerData = new PlayerData();
     }
 
-    public void FirstSaveData(FirebaseUser firebaseUser)
+    public void FirstSaveData(string UserId)
     {
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
-        fu = firebaseUser;
-
-        PlayerData playerData = new PlayerData("Player", 100);
+        PlayerData playerData = new PlayerData(100);
         currentPlayerData = playerData;
 
         var json = JsonUtility.ToJson(playerData);
-        databaseReference.Child(firebaseUser.UserId).SetRawJsonValueAsync(json);
+        databaseReference.Child(UserId).SetRawJsonValueAsync(json);
     }
 
-    public void WritePointData(FirebaseUser firebaseUser, int point)
+    public void WritePointData(string UserId, int addpoint)
     {
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
-        databaseReference.Child(firebaseUser.UserId).GetValueAsync().ContinueWith(task =>
+        databaseReference.Child(UserId).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCanceled)
             {
@@ -113,22 +109,22 @@ public class DatabaseManager : MonoBehaviour
             else if (task.IsFaulted)
             {
                 Debug.LogError("faulted");
-                FirstSaveData(firebaseUser);
+                
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("OK");
+                Debug.Log("OKWrite");
                 DataSnapshot snapshot = task.Result;
 
                 IDictionary player = (IDictionary)snapshot.Children;
 
-                PlayerData playerData = new PlayerData("Player", (int)(player["point"]) + point);
+                PlayerData playerData = new PlayerData((int)(player["point"]) + addpoint);
+
+                currentPlayerData = playerData;
 
                 var json = JsonUtility.ToJson(playerData);
-                databaseReference.Child(firebaseUser.UserId).SetRawJsonValueAsync(json);
+                databaseReference.Child(UserId).SetRawJsonValueAsync(json);
             }
         });
-
     }
-
 }

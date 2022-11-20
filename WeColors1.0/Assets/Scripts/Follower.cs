@@ -12,19 +12,13 @@ public class Follower : MonoBehaviourPun
 
     int followingPlayerNum = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-    }
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(followingPlayer != null)
-        {
-           navMeshAgent.SetDestination(followingPlayer.transform.position); 
-        }
+        if (followingPlayer == null) { return; }
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.enabled = true;
+        navMeshAgent.SetDestination(followingPlayer.transform.position);
     }
 
     // 플레이어가 휘둘러서 맞는 Painter의 태그가 1이냐 2냐에 따라 따라다니는 플레이어를 설정
@@ -33,12 +27,12 @@ public class Follower : MonoBehaviourPun
     {
         if (other.gameObject.tag == "Player1")
         {
-            followingPlayer = other.gameObject.GetComponentInParent<Transform>().gameObject;
+            followingPlayer = other.transform.parent.gameObject;
             photonView.RPC("RPCSetFollowerColorRed", RpcTarget.All);
         }
         else if (other.gameObject.tag == "Player2")
         {
-            followingPlayer = other.gameObject.GetComponentInParent<Transform>().gameObject;
+            followingPlayer = other.transform.parent.gameObject;
             photonView.RPC("RPCSetFollowerColorBlue", RpcTarget.All);
         }
     }
@@ -53,7 +47,7 @@ public class Follower : MonoBehaviourPun
     [PunRPC]
     void RPCSetFollowerColorBlue()
     {
-         followingPlayerNum = 2;
+        followingPlayerNum = 2;
         GetComponent<MeshRenderer>().material.color = Color.blue;
     }
 }

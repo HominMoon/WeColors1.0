@@ -6,6 +6,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Firebase.Database;
 
 public class MatchCounter : MonoBehaviourPunCallbacks
 {
@@ -25,8 +26,13 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text player1PointText;
     [SerializeField] TMP_Text player2PointText;
 
+    [SerializeField] AudioClip matchSFX;
+
+    AudioSource audioSource;
+
     bool isPlayerNumber2 = false;
     bool isHostLoadLevelSucess;
+    bool isSFXPlaying = false;
     static bool isInGame = false;
     static int matchNumber = 0;
 
@@ -35,13 +41,63 @@ public class MatchCounter : MonoBehaviourPunCallbacks
     public static int player1Point = 0;
     public static int player2Point = 0;
 
+    public DatabaseReference databaseReference;
+
+    Firebase.Auth.FirebaseAuth auth;
+    Firebase.Auth.FirebaseUser user;
+
+    void InitializeFirebase()
+    {
+        Debug.Log("Setting up Firebase Auth");
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        auth.StateChanged += AuthStateChanged;
+        AuthStateChanged(this, null);
+    }
+
+    void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        if (auth.CurrentUser != user)
+        {
+            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
+            if (!signedIn && user != null)
+            {
+                Debug.Log("Signed out " + user.UserId);
+            }
+            user = auth.CurrentUser;
+            if (signedIn)
+            {
+                Debug.Log("Signed in " + user.UserId);
+            }
+        }
+    }
+
+    void OnDestroy()
+    {
+        auth.StateChanged -= AuthStateChanged;
+        auth = null;
+    }
+
     private void Awake()
     {
         Time.timeScale = 1f;
     }
 
+    public class PlayerData
+    {
+        public int point;
+
+        public PlayerData(int point)
+        {
+            this.point = point;
+        }
+    }
+
     private void Start()
     {
+        InitializeFirebase();
+
+        audioSource = GetComponent<AudioSource>();
+
         playerReady.gameObject.SetActive(false);
 
         player1PointText.text = $"{player1Point}";
@@ -51,6 +107,9 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         {
             isInGame = false;
             infoText.text = "게임이 끝났습니다!";
+
+            audioSource.PlayOneShot(matchSFX);
+            isSFXPlaying = true;
 
             if (!PhotonNetwork.LocalPlayer.IsMasterClient) { return; }
             PlayerPoint();
@@ -81,36 +140,83 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         {
             if (player1Point == 3 && player2Point < 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 5);
+                LoadData(user.UserId, 5);
             }
             else if (player1Point < 3 && player2Point == 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, -5);
+                LoadData(user.UserId, -5);
             }
             else if (player1Point == 3 && player2Point == 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 0);
+                LoadData(user.UserId, 0);
             }
         }
         else
         {
             if (player1Point == 3 && player2Point < 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, -5);
+                LoadData(user.UserId, -5);
             }
             else if (player1Point < 3 && player2Point == 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, +5);
+                LoadData(user.UserId, 5);
             }
             else if (player1Point == 3 && player2Point == 3)
             {
-                DatabaseManager.instance.WritePointData(DatabaseManager.fu, 0);
+                LoadData(user.UserId, 0);
             }
         }
 
         StartCoroutine(LoadLobby());
+    }
 
+    public void LoadData(string UserId, int addpoint)
+    {
+        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
+        databaseReference.Child(UserId).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("canceled");
+            }
+            else if (task.IsFaulted)
+            {
+                Debug.LogError("faulted");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("OKLoad");
+                DataSnapshot snapshot = task.Result;
+
+                foreach(DataSnapshot data in snapshot.Children)
+                {
+                    int playerPoint = System.Convert.ToInt32(data.Value);
+                    int sum = addpoint + playerPoint;
+                    WritePointData(UserId, sum);
+                }
+            }
+        });
+
+        //이메일을 찾았는데 없으면 -> 첫번째 세이브 데이터를 만든다. 처음 점수 100점
+
+        //아니면 이메일이 존재할 때 있는 세이브 데이터를 불러와 여기에 저장한다.
+        //매치 카운터에서는? -> 현재 가지고 있는 이메일 데이터가 파이어베이스에 존재하면, 그것을 바탕으로 점수 조절
+
+        //PlayerData playerData = new PlayerData();
+    }
+
+    public void WritePointData(string UserId, int sum)
+    {
+        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        databaseReference.Child(UserId).GetValueAsync().ContinueWith(task =>
+        {
+            var playerData = new PlayerData(sum);
+            string json = JsonUtility.ToJson(playerData);
+            databaseReference.Child(UserId).SetRawJsonValueAsync(json);
+
+        });
     }
 
     IEnumerator LoadLobby()
@@ -129,6 +235,11 @@ public class MatchCounter : MonoBehaviourPunCallbacks
         if (!isPlayer1Ready || !isPlayer2Ready)
         {
             infoText.text = "상대를 기다리는 중입니다...";
+            if (!isSFXPlaying)
+            {
+                audioSource.PlayOneShot(matchSFX);
+            }
+            isSFXPlaying = true;
         }
         else if (isPlayer1Ready && isPlayer2Ready && matchNumber == 0)
         {
@@ -203,7 +314,7 @@ public class MatchCounter : MonoBehaviourPunCallbacks
             return;
         }
         PhotonNetwork.LoadLevel($"Game{matchNumber}");
-        //PhotonNetwork.LoadLevel($"Game4");
+        //PhotonNetwork.LoadLevel($"Game3");
     }
 
     // IEnumerator HostLoadingLevel()

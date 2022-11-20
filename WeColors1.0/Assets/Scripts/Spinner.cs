@@ -18,7 +18,9 @@ public class Spinner : MonoBehaviourPun
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        if(!PhotonNetwork.IsMasterClient) { return; }
+
         transform.Rotate(new Vector3(
         xval * Time.deltaTime, 
         yval * Time.deltaTime, 

@@ -38,6 +38,7 @@ public class Game2Manager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Transform[] spawnPositions;
+    [SerializeField] GameObject wall;
 
     [SerializeField] TMP_Text infoText;
     [SerializeField] TMP_Text countText;
@@ -135,6 +136,7 @@ public class Game2Manager : MonoBehaviourPunCallbacks
         else if (countTimer == 0)
         {
             countText.text = "START!";
+            Destroy(wall);
         }
         else if(!isGameEnd)
         {

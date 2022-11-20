@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
 using GooglePlayGames;
+using Firebase.Database;
+using Firebase.Extensions;
 
 public class AuthManager : MonoBehaviour
 {
@@ -14,13 +16,15 @@ public class AuthManager : MonoBehaviour
 
     [SerializeField] Button GoogleLoginButton;
 
-    FirebaseApp firebaseApp;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
-    Firebase.Auth.Credential credential;
+    public FirebaseApp firebaseApp;
+    public FirebaseAuth firebaseAuth;
+    public FirebaseUser firebaseUser;
+    public Firebase.Auth.Credential credential;
 
-    bool isSignInProgress;
-    bool isFirebaseReady;
+    public bool isSignInProgress;
+    public bool isFirebaseReady;
+
+    public string UserId;
 
     private void Awake() {
         if(instance == null)
@@ -43,7 +47,7 @@ public class AuthManager : MonoBehaviour
 
         GoogleLoginButton.interactable = false;
         
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
             var result = task.Result;
 
@@ -68,7 +72,7 @@ public class AuthManager : MonoBehaviour
     {
         credential = Firebase.Auth.PlayGamesAuthProvider.GetCredential(GoogleManager.authCode);
 
-        firebaseAuth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        firebaseAuth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
         {
             if(task.IsFaulted)
             {
@@ -81,8 +85,8 @@ public class AuthManager : MonoBehaviour
             }
 
             firebaseUser = task.Result;
-
-            DatabaseManager.instance.FirstSaveData(firebaseUser);
+            UserId = firebaseUser.UserId;
+            DatabaseManager.instance.LoadData(UserId);
         });
     }
 }

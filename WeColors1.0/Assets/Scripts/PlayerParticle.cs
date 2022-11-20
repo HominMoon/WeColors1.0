@@ -10,6 +10,15 @@ public class PlayerParticle : MonoBehaviour
     [SerializeField] ParticleSystem damagedParticle;
     [SerializeField] ParticleSystem speedUpParticle;
 
+    [SerializeField] AudioClip damagedSFX;
+    [SerializeField] AudioClip itemSFX;
+
+    AudioSource audioSource;
+
+    private void Start() {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Respawn")
         {
@@ -25,10 +34,12 @@ public class PlayerParticle : MonoBehaviour
         else if(other.gameObject.tag == "Item")
         {
             itemParticle.Play();
+
         }
         else if(other.gameObject.tag == "BossAttack")
         {
             damagedParticle.Play();
+            audioSource.PlayOneShot(damagedSFX);
         }
         else if(other.gameObject.tag == "SpeedUp")
         {
